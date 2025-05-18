@@ -7,5 +7,5 @@ public class Patient
     public string Email { get; set; }
     public DateTime DateOfBirth { get; set; }
 
-    public ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
+    public ICollection<Appointment> Appointments { get; set; }
 }
