@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using System.Collections.Generic;
 using TaskProject.Models;
+using TaskProject.Models.Dto;
 namespace TaskProject.Controllers
 {
    
@@ -17,22 +18,38 @@ namespace TaskProject.Controllers
         new Patient { PatientId = 1, Name = "Alice Smith", Email = "alice@example.com", DateOfBirth = new DateTime(1990, 1, 1) },
         new Patient { PatientId = 2, Name = "Bob Johnson", Email = "bob@example.com", DateOfBirth = new DateTime(1985, 5, 15) }
     };
-
+        /// <summary>
+        /// Gets all Patients.
+        /// </summary>
+        /// <returns> A list of all Patients.</returns>
+        
         // GET: api/Patients
         [HttpGet]
         public ActionResult<IEnumerable<Patient>> GetPatients()
         {
             return Ok(Patients);  // Return mocked patient data
         }
-
+        /// <summary>
+        /// Creates New Patients.
+        /// </summary>
+        /// <returns> Added Patient.</returns>
+        /// 
         // POST: api/Patients
         [HttpPost]
-        public ActionResult<Patient> CreatePatient(Patient patient)
+        public ActionResult<Patient> CreatePatient(CreatePatientDto dto)
         {
-            patient.PatientId = Patients.Count + 1;  // Assign a new ID
-            Patients.Add(patient);
-            return CreatedAtAction(nameof(GetPatients), new { id = patient.PatientId }, patient);  // Return the created patient
+            var newPatient = new Patient
+            {
+                PatientId = Patients.Count + 1,
+                Name = dto.Name,
+                Email = dto.Email,
+                DateOfBirth = dto.DateOfBirth
+            };
+
+            Patients.Add(newPatient);
+            return CreatedAtAction(nameof(GetPatients), new { id = newPatient.PatientId }, newPatient);
         }
+
     }
 
 }
