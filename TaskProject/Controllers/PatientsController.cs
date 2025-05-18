@@ -19,7 +19,7 @@ namespace TaskProject.Controllers
         new Patient { PatientId = 2, Name = "Bob Johnson", Email = "bob@example.com", DateOfBirth = new DateTime(1985, 5, 15) }
     };
         /// <summary>
-        /// Gets all Patients.
+        /// Gets all Registered Patients.
         /// </summary>
         /// <returns> A list of all Patients.</returns>
         
@@ -30,7 +30,7 @@ namespace TaskProject.Controllers
             return Ok(Patients);  // Return mocked patient data
         }
         /// <summary>
-        /// Creates New Patients.
+        /// Register New Patient of our clinic.
         /// </summary>
         /// <returns> Added Patient.</returns>
         /// 
