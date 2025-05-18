@@ -29,7 +29,7 @@ namespace TaskProject.Controllers
             return Ok(Doctors);  // Return mocked doctor data
         }
         /// <summary>
-        /// Hire new Doctors.
+        /// Hire new Doctor.
         /// </summary>
         /// <returns> Hired Doctor.</returns>
         /// 
