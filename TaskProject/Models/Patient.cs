@@ -1,13 +1,11 @@
-﻿namespace TaskProject.Models
+﻿using TaskProject.Models;
+
+public class Patient
 {
-    public class Patient
-    {
-        public int PatientId { get; set; }
-        public string Name { get; set; }
-        public string Email { get; set; }
-        public DateTime DateOfBirth { get; set; }
+    public int PatientId { get; set; }
+    public string Name { get; set; }
+    public string Email { get; set; }
+    public DateTime DateOfBirth { get; set; }
 
-        public ICollection<Appointment> Appointments { get; set; }
-    }
-
+    public ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
 }
