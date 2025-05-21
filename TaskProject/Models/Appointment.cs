@@ -1,4 +1,6 @@
-﻿namespace TaskProject.Models
+﻿using System.Text.Json.Serialization;
+
+namespace TaskProject.Models
 {
     public class Appointment
     {
@@ -8,7 +10,9 @@
         public DateTime AppointmentDateTime { get; set; }
         public string ReasonForVisit { get; set; }
 
+        [JsonIgnore]
         public Patient? Patient { get; set; }
+        [JsonIgnore]
         public Doctor? Doctor { get; set; }
     }
 

@@ -35,7 +35,7 @@ namespace TaskProject.Controllers
         /// 
 
         [HttpPost]
-        public ActionResult<Doctor> CreateDoctor(DoctorDto dto)
+        public ActionResult<Doctor> CreateDoctor([FromBody] DoctorDto dto)
         {
             var newDoctor = new Doctor
             {

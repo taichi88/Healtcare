@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using TaskProject.Models;
 using TaskProject.Models.Dto;
+
 
 namespace TaskProject.Controllers
 {
@@ -23,7 +25,8 @@ namespace TaskProject.Controllers
         /// </summary>
         /// <returns>A list of all appointments.</returns>
         [HttpGet]
-        public ActionResult<IEnumerable<Appointment>> GetAppointments()
+
+        public ActionResult<IEnumerable<Appointment>> GetAllAppointments()
         {
             return Ok(Appointments);
         }
@@ -31,32 +34,36 @@ namespace TaskProject.Controllers
         /// <summary>
         /// Creates a new appointment.
         /// </summary>
-        /// <param name="dto">The data required to create the appointment.</param>
+        /// <param name="appointmentDto">The data required to create the appointment.</param>
         /// <returns>The created appointment object.</returns>
+        /// <response code="201">Appointment successfully created.</response>
+        /// <response code="400">Invalid appointment data.</response>
         [HttpPost]
-        public ActionResult<Appointment> CreateAppointment(AppointmentsDto dto)
+        
+        public ActionResult<Appointment> CreateAppointment([FromBody] AppointmentsDto appointmentDto)
         {
             var appointment = new Appointment
             {
                 AppointmentId = Appointments.Count + 1, // this code is untiol i use database Autoincrement constraints.
-                PatientId = dto.PatientId,
-                DoctorId = dto.DoctorId,
-                AppointmentDateTime = dto.AppointmentDateTime,
-                ReasonForVisit = dto.ReasonForVisit
+                PatientId = appointmentDto.PatientId,
+                DoctorId = appointmentDto.DoctorId,
+                AppointmentDateTime = appointmentDto.AppointmentDateTime,
+                ReasonForVisit = appointmentDto.ReasonForVisit
             };
 
             Appointments.Add(appointment);
-            return CreatedAtAction(nameof(GetAppointments), new { id = appointment.AppointmentId }, dto);
+            return CreatedAtAction(nameof(GetAppointmentById), new { id = appointment.AppointmentId }, appointment);
         }
 
-
         /// <summary>
-        /// Gets a specific appointment by ID.
+        /// Gets an appointment by ID.
         /// </summary>
-        /// <param name="id">The ID of the appointment.</param>
-        /// <returns>The appointment with the specified ID.</returns>
+        /// <param name="id">Appointment ID</param>
+        /// <returns>The appointment if found.</returns>
+        /// <response code="200">Returns the appointment</response>
+        /// <response code="404">Appointment not found</response>
         [HttpGet("{id}")]
-        public ActionResult<Appointment> GetAppointment(int id)
+        public ActionResult<Appointment> GetAppointmentById([FromRoute] int id)
         {
             var appointment = Appointments.Find(a => a.AppointmentId == id);
             if (appointment == null)
@@ -72,8 +79,11 @@ namespace TaskProject.Controllers
         /// <param name="id">The ID of the appointment to update.</param>
         /// <param name="updatedAppointment">The updated appointment details.</param>
         /// <returns>The updated appointment.</returns>
+        /// <response code="200">Appointment successfully updated.</response>
+        /// <response code="400">Invalid appointment data.</response>
+        /// <response code="404">Appointment not found.</response>
         [HttpPut("{id}")]
-        public ActionResult<Appointment> UpdateAppointment(int id, Appointment updatedAppointment)
+        public ActionResult<Appointment> UpdateAppointment([FromRoute] int id, Appointment updatedAppointment)
         {
             var appointment = Appointments.Find(a => a.AppointmentId == id);
             if (appointment == null)
@@ -86,14 +96,15 @@ namespace TaskProject.Controllers
             appointment.ReasonForVisit = updatedAppointment.ReasonForVisit;
             return Ok(appointment);
         }
-
         /// <summary>
         /// Deletes an appointment by its unique ID.
         /// </summary>
         /// <param name="id">The ID of the appointment to delete.</param>
         /// <returns>Status code indicating the result of the delete operation.</returns>
+        /// <response code="204">Appointment successfully deleted.</response>
+        /// <response code="404">Appointment not found.</response>
         [HttpDelete("{id}")]
-        public ActionResult DeleteAppointment(int id)
+        public ActionResult DeleteAppointment([FromRoute] int id)
         {
             var appointment = Appointments.Find(a => a.AppointmentId == id);
             if (appointment == null)
