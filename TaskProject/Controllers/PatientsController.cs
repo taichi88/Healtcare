@@ -15,8 +15,7 @@ namespace TaskProject.Controllers
         // Mock data for patients
         private static readonly List<Patient> Patients = new List<Patient>
     {
-        new Patient { PatientId = 1, Name = "Alice Smith", Email = "alice@example.com", DateOfBirth = new DateTime(1990, 1, 1) },
-        new Patient { PatientId = 2, Name = "Bob Johnson", Email = "bob@example.com", DateOfBirth = new DateTime(1985, 5, 15) }
+        
     };
         /// <summary>
         /// Gets all Registered Patients.
@@ -38,16 +37,8 @@ namespace TaskProject.Controllers
         [HttpPost]
         public ActionResult<Patient> CreatePatient([FromBody] CreatePatientDto dto)
         {
-            var newPatient = new Patient
-            {
-                PatientId = Patients.Count + 1,
-                Name = dto.Name,
-                Email = dto.Email,
-                DateOfBirth = dto.DateOfBirth
-            };
+            return Ok();
 
-            Patients.Add(newPatient);
-            return CreatedAtAction(nameof(GetPatients), new { id = newPatient.PatientId }, newPatient);
         }
 
     }

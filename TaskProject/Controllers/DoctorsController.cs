@@ -15,8 +15,7 @@ namespace TaskProject.Controllers
         // Mock data for doctors
         private static readonly List<Doctor> Doctors = new List<Doctor>
     {
-        new Doctor { DoctorId = 1, Name = "Dr. Emily Davis", Specialty = "Cardiology" },
-        new Doctor { DoctorId = 2, Name = "Dr. Michael Lee", Specialty = "Dentistry" }
+        
     };
         /// <summary>
         /// Gets all Doctors.
@@ -37,14 +36,7 @@ namespace TaskProject.Controllers
         [HttpPost]
         public ActionResult<Doctor> CreateDoctor([FromBody] DoctorDto dto)
         {
-            var newDoctor = new Doctor
-            {
-                DoctorId = Doctors.Count + 1,
-                Name = dto.Name,
-                Specialty = dto.Specialty
-            };
-            Doctors.Add(newDoctor);
-            return CreatedAtAction(nameof(GetDoctors), new { id = newDoctor.DoctorId }, newDoctor);
+            return Ok();
         }
 
     }
