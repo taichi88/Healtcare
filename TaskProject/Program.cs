@@ -16,7 +16,7 @@ builder.Services.AddSwaggerGen(options =>
 {
     // Get the XML documentation file path
     var xmlFile = Path.Combine(AppContext.BaseDirectory, "TaskProject.xml");
-    options.IncludeXmlComments(xmlFile); // This tells Swagger to include the XML file
+    options.IncludeXmlComments(xmlFile); // This tells Swagger to include the XML fileas comments
 });
 
 var app = builder.Build();
