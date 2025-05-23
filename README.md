@@ -37,5 +37,5 @@ All persons are stored in a common table and differentiated by roles such as Doc
 
 ---
 
-## 📁 Project Structure
+
 
