@@ -82,13 +82,13 @@ public class MedicalDbContext : DbContext
     
 
 }
-public static class DataExtensions
-{
-    public static WebApplication ApplyMigrations(this WebApplication app)
-    {
-        using var scope = app.Services.CreateScope();
-        var db = scope.ServiceProvider.GetRequiredService<MedicalDbContext>();
-        db.Database.Migrate();
-        return app;
-    }
-}
+//public static class DataExtensions1
+//{
+//    public static WebApplication ApplyMigrations(this WebApplication app)
+//    {
+//        using var scope = app.Services.CreateScope();
+//        var db = scope.ServiceProvider.GetRequiredService<MedicalDbContext>();
+//        db.Database.Migrate();
+//        return app;
+//    }
+//}
