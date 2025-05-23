@@ -16,8 +16,7 @@ namespace TaskProject.Controllers
         // Mock data for appointments static list
         private static readonly List<Appointment> Appointments = new List<Appointment>
         {
-            new Appointment { AppointmentId = 1, PatientId = 1, DoctorId = 1, AppointmentDateTime = new DateTime(2025, 5, 20, 10, 0, 0), ReasonForVisit = "General Checkup" },
-            new Appointment { AppointmentId = 2, PatientId = 2, DoctorId = 2, AppointmentDateTime = new DateTime(2025, 5, 20, 11, 30, 0), ReasonForVisit = "Dental Cleaning" }
+           
         };
 
         /// <summary>
@@ -42,17 +41,7 @@ namespace TaskProject.Controllers
         
         public ActionResult<Appointment> CreateAppointment([FromBody] AppointmentsDto appointmentDto)
         {
-            var appointment = new Appointment
-            {
-                AppointmentId = Appointments.Count + 1, // this code is untiol i use database Autoincrement constraints.
-                PatientId = appointmentDto.PatientId,
-                DoctorId = appointmentDto.DoctorId,
-                AppointmentDateTime = appointmentDto.AppointmentDateTime,
-                ReasonForVisit = appointmentDto.ReasonForVisit
-            };
-
-            Appointments.Add(appointment);
-            return CreatedAtAction(nameof(GetAppointmentById), new { id = appointment.AppointmentId }, appointment);
+            return Ok();
         }
 
         /// <summary>
@@ -85,16 +74,7 @@ namespace TaskProject.Controllers
         [HttpPut("{id}")]
         public ActionResult<Appointment> UpdateAppointment([FromRoute] int id, Appointment updatedAppointment)
         {
-            var appointment = Appointments.Find(a => a.AppointmentId == id);
-            if (appointment == null)
-            {
-                return NotFound();
-            }
-            appointment.PatientId = updatedAppointment.PatientId;
-            appointment.DoctorId = updatedAppointment.DoctorId;
-            appointment.AppointmentDateTime = updatedAppointment.AppointmentDateTime;
-            appointment.ReasonForVisit = updatedAppointment.ReasonForVisit;
-            return Ok(appointment);
+            return Ok();
         }
         /// <summary>
         /// Deletes an appointment by its unique ID.
