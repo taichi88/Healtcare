@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MyMigrations.Migrations
 {
     [DbContext(typeof(MedicalDbContext))]
-    [Migration("20250522132028_test1")]
+    [Migration("20250523113456_test1")]
     partial class test1
     {
         /// <inheritdoc />
@@ -152,10 +152,6 @@ namespace MyMigrations.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Specialty")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -237,6 +233,10 @@ namespace MyMigrations.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Surname")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

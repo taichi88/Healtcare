@@ -31,6 +31,7 @@ namespace MyMigrations.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Surname = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PersonalNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -50,8 +51,7 @@ namespace MyMigrations.Migrations
                     Id = table.Column<int>(type: "int", nullable: false),
                     Specialty = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LicenseNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    YearsOfExperience = table.Column<int>(type: "int", nullable: false),
-                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    YearsOfExperience = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
