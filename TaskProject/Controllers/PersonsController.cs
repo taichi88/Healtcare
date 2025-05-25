@@ -50,6 +50,14 @@ namespace TaskProject.Controllers
             var updated = await _personService.UpdatePersonAsync(id, dto);
             return Ok(updated);
         }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeletePerson(int id)
+        {
+            var deleted = await _personService.DeletePersonAsync(id);
+            if (!deleted)
+                return NotFound();
+            return NoContent(); // 204 on success
+        }
 
 
     }

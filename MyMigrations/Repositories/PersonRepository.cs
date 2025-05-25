@@ -31,6 +31,15 @@ namespace MyMigrations.Repositories
             _context.Persons.Update(person);
             await _context.SaveChangesAsync();   // EF Core opens+commits a transaction here
         }
+        public async Task<bool> DeleteAsync(int id)
+        {
+            var person = await _context.Persons.FindAsync(id);
+            if (person == null) return false;
+
+            _context.Persons.Remove(person);
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
 
 }
