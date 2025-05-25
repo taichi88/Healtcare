@@ -45,10 +45,52 @@ namespace Application.Services
                 PersonalNumber = createdPerson.PersonalNumber,
                 DateOfBirth = createdPerson.DateOfBirth,
                 Phone = createdPerson.Phone,
-               
+                Role = Enum.TryParse<RoleType>(createdPerson.Role, out var role) ? role : RoleType.Patient,
                 Email = createdPerson.Email,
                 Address = createdPerson.Address,
                 // Map other fields...
+            };
+
+
+        }
+        public async Task<PersonDto> UpdatePersonAsync(int id, PersonDto dto)
+        {
+            var person = await _personRepository.GetByIdAsync(id);
+            if (person == null) throw new KeyNotFoundException();
+
+            // map only the updatable fields
+            person.Name = dto.Name;
+            person.Email = dto.Email;
+            person.Address = dto.Address;
+            person.Role = dto.Role.ToString();
+            // …etc…
+
+            await _personRepository.UpdateAsync(person);
+
+            // map back to DTO
+            return new PersonDto
+            {
+                Name = person.Name,
+                Email = person.Email,
+                Role = Enum.TryParse<RoleType>(person.Role, out var role) ? role : RoleType.Patient,
+                // …etc…
+            };
+        }
+        public async Task<PersonDto?> GetByIdAsync(int id)
+        {
+            var person = await _personRepository.GetByIdAsync(id);
+            if (person == null) return null;
+
+            return new PersonDto
+            {
+                Name = person.Name,
+                Surname = person.Surname,
+                Email = person.Email,
+                Address = person.Address,
+                PersonalNumber = person.PersonalNumber,
+                DateOfBirth = person.DateOfBirth,
+                Phone = person.Phone,
+                Role = Enum.TryParse<RoleType>(person.Role, out var r) ? r : RoleType.Patient
             };
         }
     }

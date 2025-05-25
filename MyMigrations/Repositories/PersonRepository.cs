@@ -23,6 +23,14 @@ namespace MyMigrations.Repositories
             await _context.SaveChangesAsync();
             return person;
         }
+        public async Task<Person> GetByIdAsync(int id) =>
+            await _context.Persons.FindAsync(id);
+
+        public async Task UpdateAsync(Person person)
+        {
+            _context.Persons.Update(person);
+            await _context.SaveChangesAsync();   // EF Core opens+commits a transaction here
+        }
     }
 
 }

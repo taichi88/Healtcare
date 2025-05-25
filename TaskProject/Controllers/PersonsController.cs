@@ -36,6 +36,20 @@ namespace TaskProject.Controllers
             return Ok();
 
         }
+        [HttpGet("{id}")]
+        public async Task<ActionResult<PersonDto>> GetById(int id)
+        {
+            var person = await _personService.GetByIdAsync(id);
+            if (person == null)
+                return NotFound();
+            return Ok(person);
+        }
+        [HttpPut("{id}")]
+        public async Task<ActionResult<PersonDto>> UpdatePerson(int id, [FromBody] PersonDto dto)
+        {
+            var updated = await _personService.UpdatePersonAsync(id, dto);
+            return Ok(updated);
+        }
 
 
     }
