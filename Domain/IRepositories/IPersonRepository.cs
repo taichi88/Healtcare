@@ -12,6 +12,7 @@ namespace Domain.IRepositories
         Task<Person> AddPersonAsync(Person person);
         Task<Person> GetByIdAsync(int id);
         Task UpdateAsync(Person person);
+        Task<bool> DeleteAsync(int id);
 
     }
 

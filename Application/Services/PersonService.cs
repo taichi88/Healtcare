@@ -93,5 +93,9 @@ namespace Application.Services
                 Role = Enum.TryParse<RoleType>(person.Role, out var r) ? r : RoleType.Patient
             };
         }
+        public async Task<bool> DeletePersonAsync(int id)
+        {
+            return await _personRepository.DeleteAsync(id);
+        }
     }
 }

@@ -13,6 +13,7 @@ namespace Application.Interfaces
         Task<PersonDto> CreatePersonAsync(PersonDto dto);
         Task<PersonDto> UpdatePersonAsync(int id, PersonDto dto);
         Task<PersonDto?> GetByIdAsync(int id);
+        Task<bool> DeletePersonAsync(int id);
 
 
     }
