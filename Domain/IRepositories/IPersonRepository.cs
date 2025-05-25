@@ -10,6 +10,9 @@ namespace Domain.IRepositories
     public interface IPersonRepository
     {
         Task<Person> AddPersonAsync(Person person);
+        Task<Person> GetByIdAsync(int id);
+        Task UpdateAsync(Person person);
+
     }
 
 }
