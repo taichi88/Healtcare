@@ -9,13 +9,11 @@ using HealthcareApi.Application.DTO;
 
 namespace HealthcareApi.application.Interfaces
 {
-    public interface IPersonService
+    internal interface IPatientService
     {
-        Task<PersonDto> CreatePersonAsync(PersonDto dto);
-        Task<PersonDto> UpdatePersonAsync(int id, PersonDto dto);
-        Task<PersonDto?> GetByIdAsync(int id);
+        Task<PatientDto> CreatePersonAsync(PatientDto dto);
+        Task<PatientDto> UpdatePersonAsync(int id, PersonDto dto);
+        Task<PatientDto?> GetByIdAsync(int id);
         Task<bool> DeletePersonAsync(int id);
-
-
     }
 }

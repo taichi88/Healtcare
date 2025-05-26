@@ -1,13 +1,14 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using HealthcareApi.Application.DTO;
+using HealthcareApi.Domain.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using TaskProject.Models;
-using TaskProject.Models.Dto;
 
 
-namespace TaskProject.Controllers
+
+namespace HealthcareApi.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

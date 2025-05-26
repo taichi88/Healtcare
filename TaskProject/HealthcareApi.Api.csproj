@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
@@ -7,6 +7,7 @@
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<!-- Enable XML Documentation -->
 		<DocumentationFile>bin\Debug\net8.0\TaskProject.xml</DocumentationFile>
+		<UserSecretsId>16382c8a-3ccb-4a2d-ad16-295dd2ed5872</UserSecretsId>
 		<!-- Path to the XML file -->
 	</PropertyGroup>
 
@@ -17,12 +18,17 @@
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.5" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.5">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.5" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Application\Application.csproj" />
-	  <ProjectReference Include="..\MyMigrations\MyMigrations.csproj" />
+	  <ProjectReference Include="..\Application\HealthcareApi.Application.csproj" />
+	  <ProjectReference Include="..\MyMigrations\HealthcareApi.Infrastructure.csproj" />
 	</ItemGroup>
 
 </Project>

@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Domain.IRepositories;
-using TaskProject.Models;
+using HealthcareApi.Api.Models;
+using HealthcareApi.Domain.IRepositories;
+using HealthcareApi.Domain.Models;
 
-namespace MyMigrations.Repositories
+
+
+namespace HealthcareApi.Infrastructure.Repositories
 {
     public class PersonRepository : IPersonRepository
     {
-        private readonly MedicalDbContext _context;
-        public PersonRepository(MedicalDbContext context)
+        private readonly HealthcareSystemDbContext _context;
+        public PersonRepository(HealthcareSystemDbContext context)
         {
             _context = context;
         }

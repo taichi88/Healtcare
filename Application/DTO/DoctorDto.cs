@@ -1,4 +1,7 @@
-﻿namespace TaskProject.Models.Dto
+﻿
+
+
+namespace HealthcareApi.Application.DTO
 {
     public class DoctorDto
     {
