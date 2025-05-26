@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Application.Interfaces;
-using Domain.IRepositories;
-using Domain.Models.Dto;
-using TaskProject.Models;
+using HealthcareApi.application.Interfaces;
+using HealthcareApi.Application.DTO;
+using HealthcareApi.Domain.IRepositories;
+using HealthcareApi.Domain.Models;
+
+
 
 namespace Application.Services
 {
@@ -29,9 +31,9 @@ namespace Application.Services
                 Email = dto.Email,
                 Address = dto.Address,
                 PersonalNumber = dto.PersonalNumber,
-                DateOfBirth = dto.DateOfBirth,
+                
                 Phone = dto.Phone,
-                Role = dto.Role.ToString(),
+                
 
                 // Map other fields...
             };
@@ -43,9 +45,9 @@ namespace Application.Services
                 Name = createdPerson.Name,
                 Surname = createdPerson.Surname,
                 PersonalNumber = createdPerson.PersonalNumber,
-                DateOfBirth = createdPerson.DateOfBirth,
+                
                 Phone = createdPerson.Phone,
-                Role = Enum.TryParse<RoleType>(createdPerson.Role, out var role) ? role : RoleType.Patient,
+                
                 Email = createdPerson.Email,
                 Address = createdPerson.Address,
                 // Map other fields...
@@ -62,7 +64,7 @@ namespace Application.Services
             person.Name = dto.Name;
             person.Email = dto.Email;
             person.Address = dto.Address;
-            person.Role = dto.Role.ToString();
+            
             // …etc…
 
             await _personRepository.UpdateAsync(person);
@@ -72,7 +74,7 @@ namespace Application.Services
             {
                 Name = person.Name,
                 Email = person.Email,
-                Role = Enum.TryParse<RoleType>(person.Role, out var role) ? role : RoleType.Patient,
+                
                 // …etc…
             };
         }
@@ -88,9 +90,11 @@ namespace Application.Services
                 Email = person.Email,
                 Address = person.Address,
                 PersonalNumber = person.PersonalNumber,
-                DateOfBirth = person.DateOfBirth,
+                
+                
+
                 Phone = person.Phone,
-                Role = Enum.TryParse<RoleType>(person.Role, out var r) ? r : RoleType.Patient
+                
             };
         }
         public async Task<bool> DeletePersonAsync(int id)

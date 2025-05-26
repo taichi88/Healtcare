@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TaskProject.Models;
+using HealthcareApi.Domain.Models;
 
-namespace Domain.IRepositories
+
+namespace HealthcareApi.Domain.IRepositories
 {
     public interface IPersonRepository
     {

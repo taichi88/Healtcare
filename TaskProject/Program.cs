@@ -1,8 +1,10 @@
-using Application.Interfaces;
+using HealthcareApi.application.Interfaces;
 using Application.Services;
-using Domain.IRepositories;
+using HealthcareApi.Domain.IRepositories;
 using Microsoft.EntityFrameworkCore;
-using MyMigrations.Repositories;
+using HealthcareApi.Infrastructure.Repositories;
+using HealthcareApi.Api.Models;
+
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,7 +14,7 @@ builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 builder.Services.AddScoped<IPersonService, PersonService>();
 
 
-builder.Services.AddDbContext<MedicalDbContext>(options =>
+builder.Services.AddDbContext<HealthcareSystemDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
@@ -32,7 +34,7 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var serviceProvider = scope.ServiceProvider;
-    var dbContext = serviceProvider.GetRequiredService<MedicalDbContext>();
+    var dbContext = serviceProvider.GetRequiredService<HealthcareSystemDbContext>();
     if (!await dbContext.Database.CanConnectAsync())
     {
         await dbContext.Database.MigrateAsync();

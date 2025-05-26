@@ -1,19 +1,21 @@
-﻿using Domain.Models.Dto;
+﻿
 using Microsoft.AspNetCore.Mvc;
-using TaskProject.Models;
-using TaskProject.Models.Dto;
-using Domain.IRepositories;
+
+
+
 using Application.Services;
-using Application.Interfaces;
 
-namespace TaskProject.Controllers
+using HealthcareApi.application.Interfaces;
+using HealthcareApi.Application.DTO;
+
+namespace HealthcareApi.Api.Controllers
 {
-
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
+    
 
   
-    public class PersonsController : Controller
+    public class PersonsController : ControllerBase
     {
 
         private readonly IPersonService _personService;
@@ -45,7 +47,7 @@ namespace TaskProject.Controllers
             return Ok(person);
         }
         [HttpPut("{id}")]
-        public async Task<ActionResult<PersonDto>> UpdatePerson(int id, [FromBody] PersonDto dto)
+        public async Task<ActionResult<PersonDto>> UpdatePerson(int id,   PersonDto dto)
         {
             var updated = await _personService.UpdatePersonAsync(id, dto);
             return Ok(updated);

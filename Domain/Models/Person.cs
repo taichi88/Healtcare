@@ -1,19 +1,29 @@
-﻿namespace TaskProject.Models
+﻿using System;
+using System.Collections.Generic;
+
+namespace HealthcareApi.Domain.Models;
+
+public partial class Person
 {
-    public class Person
-    {
-        public int Id { get; set; }
-        public string? Name { get; set; }
-        public string? Surname { get; set; }
+    public int Id { get; set; }
 
-        public string? Email { get; set; }
-        public string? PersonalNumber { get; set; }
-        public DateTime? DateOfBirth { get; set; }
-        public string? Phone { get; set; }
-        public string? Address { get; set; }
-        public string? Role { get; set; }
+    public string Name { get; set; } = null!;
 
-        public Patient Patient { get; set; }
-        public Doctor Doctor { get; set; }
-    }
+    public string Surname { get; set; } = null!;
+
+    public string? Email { get; set; }
+
+    public string PersonalNumber { get; set; } = null!;
+
+    public DateOnly? DateOfBirth { get; set; }
+
+    public string? Phone { get; set; }
+
+    public string? Address { get; set; }
+
+    public virtual DeskStaff? DeskStaff { get; set; }
+
+    public virtual Doctor? Doctor { get; set; }
+
+    public virtual Patient? Patient { get; set; }
 }

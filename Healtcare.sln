@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35514.174
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskProject", "TaskProject\TaskProject.csproj", "{C9ADA31A-FFCD-4DBA-AA58-C864E91BFAA7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthcareApi.Api", "TaskProject\HealthcareApi.Api.csproj", "{C9ADA31A-FFCD-4DBA-AA58-C864E91BFAA7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyMigrations", "MyMigrations\MyMigrations.csproj", "{33D1259D-C8C4-4350-AEE0-4FABED2FA019}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthcareApi.Infrastructure", "MyMigrations\HealthcareApi.Infrastructure.csproj", "{33D1259D-C8C4-4350-AEE0-4FABED2FA019}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{4A14D58A-E04E-42CD-88B4-9DBADA8E91F4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthcareApi.Domain", "Domain\HealthcareApi.Domain.csproj", "{4A14D58A-E04E-42CD-88B4-9DBADA8E91F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskProject.ArchitectureTest", "TaskProject.ArchitecutreTest\TaskProject.ArchitectureTest.csproj", "{F059A101-EB50-4C92-87E8-DB6A50E23062}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthcareApi.Test", "TaskProject.ArchitecutreTest\HealthcareApi.Test.csproj", "{F059A101-EB50-4C92-87E8-DB6A50E23062}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{43A9F776-13FB-4599-A7CB-86C240339C83}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthcareApi.Application", "Application\HealthcareApi.Application.csproj", "{43A9F776-13FB-4599-A7CB-86C240339C83}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

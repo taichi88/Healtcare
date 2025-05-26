@@ -1,22 +1,27 @@
-﻿using System.Text.Json.Serialization;
+﻿using System;
+using System.Collections.Generic;
 
-namespace TaskProject.Models
+namespace HealthcareApi.Domain.Models;
+
+public partial class Appointment
 {
-    public class Appointment
-    {
-        public int AppointmentId { get; set; }
-        public int PatientId { get; set; }
-        public int DoctorId { get; set; }
-        public DateTime AppointmentDatetime { get; set; }
-        public string ReasonForVisit { get; set; }
-        public string Status { get; set; }
-        public string Notes { get; set; }
+    public int AppointmentId { get; set; }
 
-        [JsonIgnore]
-        public Patient? Patient { get; set; }
-        [JsonIgnore]
-        public Doctor? Doctor { get; set; }
-        public Payment Payment { get; set; }
-    }
+    public int? PatientId { get; set; }
 
+    public int? DoctorId { get; set; }
+
+    public DateTime AppointmentDateTime { get; set; }
+
+    public string? ReasonForVisit { get; set; }
+
+    public string? Status { get; set; }
+
+    public string? Notes { get; set; }
+
+    public virtual Doctor? Doctor { get; set; }
+
+    public virtual Patient? Patient { get; set; }
+
+    public virtual ICollection<Payment> Payments { get; set; } = new List<Payment>();
 }
