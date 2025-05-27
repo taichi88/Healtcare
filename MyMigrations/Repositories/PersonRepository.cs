@@ -26,6 +26,10 @@ namespace HealthcareApi.Infrastructure.Repositories
             await _context.SaveChangesAsync();
             return person;
         }
+
+
+
+
         public async Task<Person> GetByIdAsync(int id) =>
             await _context.Persons.FindAsync(id);
 

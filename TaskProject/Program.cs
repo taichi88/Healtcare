@@ -4,6 +4,10 @@ using HealthcareApi.Domain.IRepositories;
 using Microsoft.EntityFrameworkCore;
 using HealthcareApi.Infrastructure.Repositories;
 using HealthcareApi.Api.Models;
+using HealthcareApi.Application.IUnitOfWork;
+using HealthcareApi.Infrastructure.UnitOfWork;
+
+
 
 
 
@@ -12,6 +16,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 builder.Services.AddScoped<IPersonService, PersonService>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IPatientRepository, PatientRepository>();
+
+
+
+
 
 
 builder.Services.AddDbContext<HealthcareSystemDbContext>(options =>

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using HealthcareApi.application.Interfaces;
 using HealthcareApi.Application.DTO;
+using HealthcareApi.Application.IUnitOfWork;
 using HealthcareApi.Domain.IRepositories;
 using HealthcareApi.Domain.Models;
 
@@ -14,11 +15,11 @@ namespace Application.Services
 {
     public class PersonService : IPersonService
     {
-        private readonly IPersonRepository _personRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public PersonService(IPersonRepository personRepository)
+        public PersonService(IUnitOfWork unitOfWork)
         {
-            _personRepository = personRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<PersonDto> CreatePersonAsync(PersonDto dto)
@@ -37,8 +38,9 @@ namespace Application.Services
 
                 // Map other fields...
             };
+            
 
-            var createdPerson = await _personRepository.AddPersonAsync(person);
+            var createdPerson = await _unitOfWork.Persons.AddPersonAsync(person);
 
             return new PersonDto
             {
@@ -57,7 +59,7 @@ namespace Application.Services
         }
         public async Task<PersonDto> UpdatePersonAsync(int id, PersonDto dto)
         {
-            var person = await _personRepository.GetByIdAsync(id);
+            var person = await _unitOfWork.Persons.GetByIdAsync(id);
             if (person == null) throw new KeyNotFoundException();
 
             // map only the updatable fields
@@ -67,7 +69,7 @@ namespace Application.Services
             
             // …etc…
 
-            await _personRepository.UpdateAsync(person);
+            await _unitOfWork.Persons.UpdateAsync(person);
 
             // map back to DTO
             return new PersonDto
@@ -80,7 +82,7 @@ namespace Application.Services
         }
         public async Task<PersonDto?> GetByIdAsync(int id)
         {
-            var person = await _personRepository.GetByIdAsync(id);
+            var person = await _unitOfWork.Persons.GetByIdAsync(id);
             if (person == null) return null;
 
             return new PersonDto
@@ -99,7 +101,7 @@ namespace Application.Services
         }
         public async Task<bool> DeletePersonAsync(int id)
         {
-            return await _personRepository.DeleteAsync(id);
+            return await _unitOfWork.Persons.DeleteAsync(id);
         }
     }
 }
