@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using HealthcareApi.Api.Models;
 using HealthcareApi.Domain.IRepositories;
-using HealthcareApi.Domain.Models;
+
 
 
 
@@ -13,12 +13,11 @@ namespace HealthcareApi.Infrastructure.Repositories
 {
     public class PersonRepository : IPersonRepository
     {
-        private readonly HealthcareSystemDbContext _context;
-        public PersonRepository(HealthcareSystemDbContext context)
+        private readonly HealthcareApiContext _context;
+        public PersonRepository(HealthcareApiContext context)
         {
             _context = context;
         }
-
         public async Task<Person> AddPersonAsync(Person person)
         {
 
@@ -26,9 +25,6 @@ namespace HealthcareApi.Infrastructure.Repositories
             await _context.SaveChangesAsync();
             return person;
         }
-
-
-
 
         public async Task<Person> GetByIdAsync(int id) =>
             await _context.Persons.FindAsync(id);

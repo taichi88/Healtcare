@@ -10,33 +10,26 @@
 );
 
 CREATE TABLE DeskStaff (
-    Id INT PRIMARY KEY,
-    PersonId INT NOT NULL UNIQUE,
-    UserName VARCHAR(100) NOT NULL UNIQUE,
-    Password VARCHAR(255) NOT NULL,
+    PersonId INT PRIMARY KEY,
     FOREIGN KEY (PersonId) REFERENCES Persons(Id)
 );
 
 CREATE TABLE Patients (
-    Id INT PRIMARY KEY, -- will be the same as Person.Id (1:1)
-    PersonId INT NOT NULL,
+    PersonId INT PRIMARY KEY,
     InsuranceNumber VARCHAR(50),
     EmergencyContactName VARCHAR(100),
     EmergencyContactPhone VARCHAR(20),
     BloodType VARCHAR(3),
     Allergies TEXT,
-    CONSTRAINT FK_Patients_Person FOREIGN KEY (Id) REFERENCES Persons(Id),
-    CONSTRAINT UQ_Patient_Person UNIQUE (PersonId)
+    CONSTRAINT FK_Patients_Person FOREIGN KEY (PersonId) REFERENCES Persons(Id)
 );
 
 CREATE TABLE Doctors (
-    Id INT PRIMARY KEY, -- will be the same as Person.Id (1:1)
-    PersonId INT NOT NULL,
+    PersonId INT PRIMARY KEY,
     Specialty VARCHAR(100),
     LicenseNumber VARCHAR(50),
     YearsOfExperience INT,
-    CONSTRAINT FK_Doctors_Person FOREIGN KEY (Id) REFERENCES Persons(Id),
-    CONSTRAINT UQ_Doctor_Person UNIQUE (PersonId)
+    CONSTRAINT FK_Doctors_Person FOREIGN KEY (PersonId) REFERENCES Persons(Id)
 );
 
 CREATE TABLE Appointments (
@@ -47,8 +40,8 @@ CREATE TABLE Appointments (
     ReasonForVisit VARCHAR(255),
     Status VARCHAR(50), -- e.g., Scheduled, Completed, Cancelled
     Notes TEXT,
-    CONSTRAINT FK_Appointments_Patient FOREIGN KEY (PatientId) REFERENCES Patients(Id),
-    CONSTRAINT FK_Appointments_Doctor FOREIGN KEY (DoctorId) REFERENCES Doctors(Id)
+    CONSTRAINT FK_Appointments_Patient FOREIGN KEY (PatientId) REFERENCES Patients(PersonId),
+    CONSTRAINT FK_Appointments_Doctor FOREIGN KEY (DoctorId) REFERENCES Doctors(PersonId)
 );
 
 CREATE TABLE Diagnoses (
@@ -58,8 +51,8 @@ CREATE TABLE Diagnoses (
     Description VARCHAR(255),
     PrescribedTreatment TEXT,
     DoctorId INT,
-    CONSTRAINT FK_Diagnoses_Patient FOREIGN KEY (PatientId) REFERENCES Patients(Id),
-    CONSTRAINT FK_Diagnoses_Doctor FOREIGN KEY (DoctorId) REFERENCES Doctors(Id)
+    CONSTRAINT FK_Diagnoses_Patient FOREIGN KEY (PatientId) REFERENCES Patients(PersonId),
+    CONSTRAINT FK_Diagnoses_Doctor FOREIGN KEY (DoctorId) REFERENCES Doctors(PersonId)
 );
 
 CREATE TABLE Payments (

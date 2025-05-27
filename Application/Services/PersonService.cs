@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HealthcareApi.Api.Models;
 using HealthcareApi.application.Interfaces;
 using HealthcareApi.Application.DTO;
 using HealthcareApi.Application.IUnitOfWork;
 using HealthcareApi.Domain.IRepositories;
-using HealthcareApi.Domain.Models;
+
 
 
 

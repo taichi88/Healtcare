@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace HealthcareApi.Domain.Models;
+namespace HealthcareApi.Api.Models;
 
 public partial class Appointment
 {

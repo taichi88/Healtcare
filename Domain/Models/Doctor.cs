@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace HealthcareApi.Domain.Models;
+namespace HealthcareApi.Api.Models;
 
 public partial class Doctor
 {
-    public int Id { get; set; }
-
     public int PersonId { get; set; }
 
     public string? Specialty { get; set; }
@@ -19,5 +17,5 @@ public partial class Doctor
 
     public virtual ICollection<Diagnosis> Diagnoses { get; set; } = new List<Diagnosis>();
 
-    public virtual Person IdNavigation { get; set; } = null!;
+    public virtual Person Person { get; set; } = null!;
 }

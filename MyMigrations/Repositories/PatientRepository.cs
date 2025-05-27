@@ -1,13 +1,13 @@
 ﻿using HealthcareApi.Api.Models;
 using HealthcareApi.Domain.IRepositories;
-using HealthcareApi.Domain.Models;
+using HealthcareApi.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 public class PatientRepository : IPatientRepository
 {
-    private readonly HealthcareSystemDbContext _context;
+    private readonly HealthcareApiContext _context;
 
-    public PatientRepository(HealthcareSystemDbContext context)
+    public PatientRepository(HealthcareApiContext context)
     {
         _context = context;
     }

@@ -12,19 +12,15 @@ namespace HealthcareApi.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    
 
-  
     public class PersonsController : ControllerBase
     {
-
         private readonly IPersonService _personService;
 
         public PersonsController(IPersonService personService)
         {
             _personService = personService;
         }
-
 
         [HttpPost]
         public async Task<ActionResult<PersonDto>> CreatePerson([FromBody] PersonDto dto)
