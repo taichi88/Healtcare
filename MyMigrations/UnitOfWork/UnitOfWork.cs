@@ -11,13 +11,13 @@ namespace HealthcareApi.Infrastructure.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly HealthcareSystemDbContext _context;
+        private readonly HealthcareApiContext _context;
 
         public IPatientRepository Patients { get; }
         public IPersonRepository Persons { get; }
       
 
-        public UnitOfWork(HealthcareSystemDbContext context,
+        public UnitOfWork(HealthcareApiContext context,
                           IPatientRepository patients,
                           IPersonRepository persons
                           )

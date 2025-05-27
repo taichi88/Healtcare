@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using HealthcareApi.Domain.Models;
+using HealthcareApi.Api.Models;
+
 using Microsoft.EntityFrameworkCore;
 
-namespace HealthcareApi.Api.Models;
+namespace HealthcareApi.Infrastructure;
 
-public partial class HealthcareSystemDbContext : DbContext
+public partial class HealthcareApiContext : DbContext
 {
-    public HealthcareSystemDbContext()
+    public HealthcareApiContext()
     {
     }
 
-    public HealthcareSystemDbContext(DbContextOptions<HealthcareSystemDbContext> options)
+    public HealthcareApiContext(DbContextOptions<HealthcareApiContext> options)
         : base(options)
     {
     }
@@ -30,15 +31,13 @@ public partial class HealthcareSystemDbContext : DbContext
 
     public virtual DbSet<Person> Persons { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=HealthcareSystemDB;Trusted_Connection=True;TrustServerCertificate=True;");
+    
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Appointment>(entity =>
         {
-            entity.HasKey(e => e.AppointmentId).HasName("PK__Appointm__8ECDFCC248783DD3");
+            entity.HasKey(e => e.AppointmentId).HasName("PK__Appointm__8ECDFCC22A03CB0C");
 
             entity.HasIndex(e => e.AppointmentDateTime, "IX_Appointments_Date");
 
@@ -66,31 +65,21 @@ public partial class HealthcareSystemDbContext : DbContext
 
         modelBuilder.Entity<DeskStaff>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__DeskStaf__3214EC0728C78A38");
+            entity.HasKey(e => e.PersonId).HasName("PK__DeskStaf__AA2FFBE57CF83A3F");
 
             entity.ToTable("DeskStaff");
 
-            entity.HasIndex(e => e.PersonId, "UQ__DeskStaf__AA2FFBE4652A1E3D").IsUnique();
-
-            entity.HasIndex(e => e.UserName, "UQ__DeskStaf__C9F28456312A4536").IsUnique();
-
-            entity.Property(e => e.Id).ValueGeneratedNever();
-            entity.Property(e => e.Password)
-                .HasMaxLength(255)
-                .IsUnicode(false);
-            entity.Property(e => e.UserName)
-                .HasMaxLength(100)
-                .IsUnicode(false);
+            entity.Property(e => e.PersonId).ValueGeneratedNever();
 
             entity.HasOne(d => d.Person).WithOne(p => p.DeskStaff)
                 .HasForeignKey<DeskStaff>(d => d.PersonId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__DeskStaff__Perso__29572725");
+                .HasConstraintName("FK__DeskStaff__Perso__35BCFE0A");
         });
 
         modelBuilder.Entity<Diagnosis>(entity =>
         {
-            entity.HasKey(e => e.DiagnosisId).HasName("PK__Diagnose__0C54CC738B4E49BD");
+            entity.HasKey(e => e.DiagnosisId).HasName("PK__Diagnose__0C54CC73628EA4B9");
 
             entity.HasIndex(e => e.DiagnosisDate, "IX_Diagnoses_Date");
 
@@ -114,13 +103,11 @@ public partial class HealthcareSystemDbContext : DbContext
 
         modelBuilder.Entity<Doctor>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Doctors__3214EC07D5C4E53A");
+            entity.HasKey(e => e.PersonId).HasName("PK__Doctors__AA2FFBE51707D195");
 
             entity.HasIndex(e => e.Specialty, "IX_Doctors_Specialty");
 
-            entity.HasIndex(e => e.PersonId, "UQ_Doctor_Person").IsUnique();
-
-            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.PersonId).ValueGeneratedNever();
             entity.Property(e => e.LicenseNumber)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -128,21 +115,19 @@ public partial class HealthcareSystemDbContext : DbContext
                 .HasMaxLength(100)
                 .IsUnicode(false);
 
-            entity.HasOne(d => d.IdNavigation).WithOne(p => p.Doctor)
-                .HasForeignKey<Doctor>(d => d.Id)
+            entity.HasOne(d => d.Person).WithOne(p => p.Doctor)
+                .HasForeignKey<Doctor>(d => d.PersonId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Doctors_Person");
         });
 
         modelBuilder.Entity<Patient>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Patients__3214EC074E4227E9");
+            entity.HasKey(e => e.PersonId).HasName("PK__Patients__AA2FFBE57080BA31");
 
             entity.HasIndex(e => e.PersonId, "IX_Patients_PersonId");
 
-            entity.HasIndex(e => e.PersonId, "UQ_Patient_Person").IsUnique();
-
-            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.PersonId).ValueGeneratedNever();
             entity.Property(e => e.Allergies).HasColumnType("text");
             entity.Property(e => e.BloodType)
                 .HasMaxLength(3)
@@ -157,15 +142,15 @@ public partial class HealthcareSystemDbContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false);
 
-            entity.HasOne(d => d.IdNavigation).WithOne(p => p.Patient)
-                .HasForeignKey<Patient>(d => d.Id)
+            entity.HasOne(d => d.Person).WithOne(p => p.Patient)
+                .HasForeignKey<Patient>(d => d.PersonId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Patients_Person");
         });
 
         modelBuilder.Entity<Payment>(entity =>
         {
-            entity.HasKey(e => e.PaymentId).HasName("PK__Payments__9B556A38015C1216");
+            entity.HasKey(e => e.PaymentId).HasName("PK__Payments__9B556A38F75E5FFD");
 
             entity.HasIndex(e => e.AppointmentId, "IX_Payments_AppointmentId");
 
@@ -189,11 +174,11 @@ public partial class HealthcareSystemDbContext : DbContext
 
         modelBuilder.Entity<Person>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Persons__3214EC07E48E01A2");
+            entity.HasKey(e => e.Id).HasName("PK__Persons__3214EC072205FEA9");
 
             entity.HasIndex(e => e.Surname, "IX_Persons_Surname");
 
-            entity.HasIndex(e => e.PersonalNumber, "UQ__Persons__AC2CC42E28FCD4E9").IsUnique();
+            entity.HasIndex(e => e.PersonalNumber, "UQ__Persons__AC2CC42E26D2A821").IsUnique();
 
             entity.Property(e => e.Address)
                 .HasMaxLength(255)

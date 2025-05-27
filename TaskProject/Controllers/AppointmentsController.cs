@@ -1,5 +1,5 @@
-﻿using HealthcareApi.Application.DTO;
-using HealthcareApi.Domain.Models;
+﻿using HealthcareApi.Api.Models;
+using HealthcareApi.Application.DTO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;

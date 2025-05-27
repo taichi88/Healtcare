@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HealthcareApi.Api.Models;
 
 namespace HealthcareApi.Domain.IRepositories
 {
-    using HealthcareApi.Domain.Models;
+   
+   
 
     public interface IPatientRepository
     {

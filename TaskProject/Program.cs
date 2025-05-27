@@ -6,6 +6,7 @@ using HealthcareApi.Infrastructure.Repositories;
 using HealthcareApi.Api.Models;
 using HealthcareApi.Application.IUnitOfWork;
 using HealthcareApi.Infrastructure.UnitOfWork;
+using HealthcareApi.Infrastructure;
 
 
 
@@ -24,7 +25,7 @@ builder.Services.AddScoped<IPatientRepository, PatientRepository>();
 
 
 
-builder.Services.AddDbContext<HealthcareSystemDbContext>(options =>
+builder.Services.AddDbContext<HealthcareApiContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
@@ -44,7 +45,7 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var serviceProvider = scope.ServiceProvider;
-    var dbContext = serviceProvider.GetRequiredService<HealthcareSystemDbContext>();
+    var dbContext = serviceProvider.GetRequiredService<HealthcareApiContext>();
     if (!await dbContext.Database.CanConnectAsync())
     {
         await dbContext.Database.MigrateAsync();

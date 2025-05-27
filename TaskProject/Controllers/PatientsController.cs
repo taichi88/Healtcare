@@ -1,6 +1,7 @@
 ﻿using Application;
+using HealthcareApi.Api.Models;
 using HealthcareApi.Application.DTO;
-using HealthcareApi.Domain.Models;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,20 +21,11 @@ namespace HealthcareApi.Api.Controllers
         
     };
 
-
-
         [HttpPost]
         public ActionResult<PatientDto> CreatePatient([FromBody] PatientDto dto)
         {
-
             return Ok();
-
         }
-
-
-
-
-
         /// <summary>
         /// Gets all Registered Patients.
         /// </summary>
