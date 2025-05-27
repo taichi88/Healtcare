@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace HealthcareApi.Domain.IRepositories
 {
-    internal interface IPatientRepository
+    using HealthcareApi.Domain.Models;
+
+    public interface IPatientRepository
     {
+        Task<List<Patient>> GetAllAsync();
     }
+
 }

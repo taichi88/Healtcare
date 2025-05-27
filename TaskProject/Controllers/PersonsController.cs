@@ -29,15 +29,10 @@ namespace HealthcareApi.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<PersonDto>> CreatePerson([FromBody] PersonDto dto)
         {
-           
-
             var createdPerson = await _personService.CreatePersonAsync(dto);
-
-           
-
             return Ok();
-
         }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<PersonDto>> GetById(int id)
         {
