@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using HealthcareApi.Api.Models;
-
 using Microsoft.EntityFrameworkCore;
 
-namespace HealthcareApi.Infrastructure;
+namespace HealthcareApi.Api.Models;
 
 public partial class HealthcareApiContext : DbContext
 {
@@ -31,13 +29,15 @@ public partial class HealthcareApiContext : DbContext
 
     public virtual DbSet<Person> Persons { get; set; }
 
-    
+   
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Appointment>(entity =>
         {
-            entity.HasKey(e => e.AppointmentId).HasName("PK__Appointm__8ECDFCC22A03CB0C");
+            entity.HasKey(e => e.AppointmentId).HasName("PK__Appointm__8ECDFCC20CF4E363");
+
+            entity.ToTable("Appointments", "healthcare");
 
             entity.HasIndex(e => e.AppointmentDateTime, "IX_Appointments_Date");
 
@@ -56,30 +56,34 @@ public partial class HealthcareApiContext : DbContext
 
             entity.HasOne(d => d.Doctor).WithMany(p => p.Appointments)
                 .HasForeignKey(d => d.DoctorId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Appointments_Doctor");
 
             entity.HasOne(d => d.Patient).WithMany(p => p.Appointments)
                 .HasForeignKey(d => d.PatientId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Appointments_Patient");
         });
 
         modelBuilder.Entity<DeskStaff>(entity =>
         {
-            entity.HasKey(e => e.PersonId).HasName("PK__DeskStaf__AA2FFBE57CF83A3F");
+            entity.HasKey(e => e.PersonId).HasName("PK__DeskStaf__AA2FFBE57840D086");
 
-            entity.ToTable("DeskStaff");
+            entity.ToTable("DeskStaff", "healthcare");
 
             entity.Property(e => e.PersonId).ValueGeneratedNever();
 
             entity.HasOne(d => d.Person).WithOne(p => p.DeskStaff)
                 .HasForeignKey<DeskStaff>(d => d.PersonId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__DeskStaff__Perso__35BCFE0A");
+                .HasConstraintName("FK__DeskStaff__Perso__276EDEB3");
         });
 
         modelBuilder.Entity<Diagnosis>(entity =>
         {
-            entity.HasKey(e => e.DiagnosisId).HasName("PK__Diagnose__0C54CC73628EA4B9");
+            entity.HasKey(e => e.DiagnosisId).HasName("PK__Diagnose__0C54CC73EB90AC7B");
+
+            entity.ToTable("Diagnoses", "healthcare");
 
             entity.HasIndex(e => e.DiagnosisDate, "IX_Diagnoses_Date");
 
@@ -94,16 +98,20 @@ public partial class HealthcareApiContext : DbContext
 
             entity.HasOne(d => d.Doctor).WithMany(p => p.Diagnoses)
                 .HasForeignKey(d => d.DoctorId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Diagnoses_Doctor");
 
             entity.HasOne(d => d.Patient).WithMany(p => p.Diagnoses)
                 .HasForeignKey(d => d.PatientId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Diagnoses_Patient");
         });
 
         modelBuilder.Entity<Doctor>(entity =>
         {
-            entity.HasKey(e => e.PersonId).HasName("PK__Doctors__AA2FFBE51707D195");
+            entity.HasKey(e => e.PersonId).HasName("PK__Doctors__AA2FFBE55FA0998C");
+
+            entity.ToTable("Doctors", "healthcare");
 
             entity.HasIndex(e => e.Specialty, "IX_Doctors_Specialty");
 
@@ -123,7 +131,9 @@ public partial class HealthcareApiContext : DbContext
 
         modelBuilder.Entity<Patient>(entity =>
         {
-            entity.HasKey(e => e.PersonId).HasName("PK__Patients__AA2FFBE57080BA31");
+            entity.HasKey(e => e.PersonId).HasName("PK__Patients__AA2FFBE50E572940");
+
+            entity.ToTable("Patients", "healthcare");
 
             entity.HasIndex(e => e.PersonId, "IX_Patients_PersonId");
 
@@ -150,7 +160,9 @@ public partial class HealthcareApiContext : DbContext
 
         modelBuilder.Entity<Payment>(entity =>
         {
-            entity.HasKey(e => e.PaymentId).HasName("PK__Payments__9B556A38F75E5FFD");
+            entity.HasKey(e => e.PaymentId).HasName("PK__Payments__9B556A386EBC0D30");
+
+            entity.ToTable("Payments", "healthcare");
 
             entity.HasIndex(e => e.AppointmentId, "IX_Payments_AppointmentId");
 
@@ -174,11 +186,13 @@ public partial class HealthcareApiContext : DbContext
 
         modelBuilder.Entity<Person>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Persons__3214EC072205FEA9");
+            entity.HasKey(e => e.Id).HasName("PK__Persons__3214EC07947CE7C2");
+
+            entity.ToTable("Persons", "healthcare");
 
             entity.HasIndex(e => e.Surname, "IX_Persons_Surname");
 
-            entity.HasIndex(e => e.PersonalNumber, "UQ__Persons__AC2CC42E26D2A821").IsUnique();
+            entity.HasIndex(e => e.PersonalNumber, "UQ__Persons__AC2CC42EE23E92D5").IsUnique();
 
             entity.Property(e => e.Address)
                 .HasMaxLength(255)

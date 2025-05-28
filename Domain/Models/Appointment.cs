@@ -7,9 +7,9 @@ public partial class Appointment
 {
     public int AppointmentId { get; set; }
 
-    public int? PatientId { get; set; }
+    public int PatientId { get; set; }
 
-    public int? DoctorId { get; set; }
+    public int DoctorId { get; set; }
 
     public DateTime AppointmentDateTime { get; set; }
 
@@ -19,9 +19,9 @@ public partial class Appointment
 
     public string? Notes { get; set; }
 
-    public virtual Doctor? Doctor { get; set; }
+    public virtual Doctor Doctor { get; set; } = null!;
 
-    public virtual Patient? Patient { get; set; }
+    public virtual Patient Patient { get; set; } = null!;
 
     public virtual ICollection<Payment> Payments { get; set; } = new List<Payment>();
 }
