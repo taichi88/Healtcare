@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using HealthcareApi.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace HealthcareApi.Api.Models;
-
+namespace HealthcareApi.Infrastructure;
+//sda
 public partial class HealthcareApiContext : DbContext
 {
     public HealthcareApiContext()
     {
     }
-
     public HealthcareApiContext(DbContextOptions<HealthcareApiContext> options)
         : base(options)
     {
     }
-
     public virtual DbSet<Appointment> Appointments { get; set; }
 
     public virtual DbSet<DeskStaff> DeskStaffs { get; set; }
@@ -29,15 +28,13 @@ public partial class HealthcareApiContext : DbContext
 
     public virtual DbSet<Person> Persons { get; set; }
 
-   
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Appointment>(entity =>
         {
-            entity.HasKey(e => e.AppointmentId).HasName("PK__Appointm__8ECDFCC20CF4E363");
+            entity.HasKey(e => e.AppointmentId).HasName("PK__Appointm__8ECDFCC210FC17F5");
 
-            entity.ToTable("Appointments", "healthcare");
+            entity.ToTable("Appointments", "Clinical");
 
             entity.HasIndex(e => e.AppointmentDateTime, "IX_Appointments_Date");
 
@@ -67,9 +64,9 @@ public partial class HealthcareApiContext : DbContext
 
         modelBuilder.Entity<DeskStaff>(entity =>
         {
-            entity.HasKey(e => e.PersonId).HasName("PK__DeskStaf__AA2FFBE57840D086");
+            entity.HasKey(e => e.PersonId).HasName("PK__DeskStaf__AA2FFBE5BA79A8F7");
 
-            entity.ToTable("DeskStaff", "healthcare");
+            entity.ToTable("DeskStaff", "Core");
 
             entity.Property(e => e.PersonId).ValueGeneratedNever();
 
@@ -81,9 +78,9 @@ public partial class HealthcareApiContext : DbContext
 
         modelBuilder.Entity<Diagnosis>(entity =>
         {
-            entity.HasKey(e => e.DiagnosisId).HasName("PK__Diagnose__0C54CC73EB90AC7B");
+            entity.HasKey(e => e.DiagnosisId).HasName("PK__Diagnose__0C54CC733CCFE268");
 
-            entity.ToTable("Diagnoses", "healthcare");
+            entity.ToTable("Diagnoses", "Clinical");
 
             entity.HasIndex(e => e.DiagnosisDate, "IX_Diagnoses_Date");
 
@@ -109,9 +106,9 @@ public partial class HealthcareApiContext : DbContext
 
         modelBuilder.Entity<Doctor>(entity =>
         {
-            entity.HasKey(e => e.PersonId).HasName("PK__Doctors__AA2FFBE55FA0998C");
+            entity.HasKey(e => e.PersonId).HasName("PK__Doctors__AA2FFBE580CF42CE");
 
-            entity.ToTable("Doctors", "healthcare");
+            entity.ToTable("Doctors", "Core");
 
             entity.HasIndex(e => e.Specialty, "IX_Doctors_Specialty");
 
@@ -131,9 +128,9 @@ public partial class HealthcareApiContext : DbContext
 
         modelBuilder.Entity<Patient>(entity =>
         {
-            entity.HasKey(e => e.PersonId).HasName("PK__Patients__AA2FFBE50E572940");
+            entity.HasKey(e => e.PersonId).HasName("PK__Patients__AA2FFBE5B7E5C374");
 
-            entity.ToTable("Patients", "healthcare");
+            entity.ToTable("Patients", "Core");
 
             entity.HasIndex(e => e.PersonId, "IX_Patients_PersonId");
 
@@ -160,9 +157,9 @@ public partial class HealthcareApiContext : DbContext
 
         modelBuilder.Entity<Payment>(entity =>
         {
-            entity.HasKey(e => e.PaymentId).HasName("PK__Payments__9B556A386EBC0D30");
+            entity.HasKey(e => e.PaymentId).HasName("PK__Payments__9B556A387F7B3F5E");
 
-            entity.ToTable("Payments", "healthcare");
+            entity.ToTable("Payments", "Billing");
 
             entity.HasIndex(e => e.AppointmentId, "IX_Payments_AppointmentId");
 
@@ -186,13 +183,13 @@ public partial class HealthcareApiContext : DbContext
 
         modelBuilder.Entity<Person>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Persons__3214EC07947CE7C2");
+            entity.HasKey(e => e.Id).HasName("PK__Persons__3214EC074CA7FA65");
 
-            entity.ToTable("Persons", "healthcare");
+            entity.ToTable("Persons", "Core");
 
             entity.HasIndex(e => e.Surname, "IX_Persons_Surname");
 
-            entity.HasIndex(e => e.PersonalNumber, "UQ__Persons__AC2CC42EE23E92D5").IsUnique();
+            entity.HasIndex(e => e.PersonalNumber, "UQ__Persons__AC2CC42EC6F9BC79").IsUnique();
 
             entity.Property(e => e.Address)
                 .HasMaxLength(255)
