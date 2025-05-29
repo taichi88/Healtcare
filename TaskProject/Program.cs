@@ -1,11 +1,31 @@
+using HealthcareApi.application.Interfaces;
+using Application.Services;
+using HealthcareApi.Domain.IRepositories;
 using Microsoft.EntityFrameworkCore;
+using HealthcareApi.Infrastructure.Repositories;
+using HealthcareApi.Api.Models;
+using HealthcareApi.Application.IUnitOfWork;
+using HealthcareApi.Infrastructure.UnitOfWork;
+using HealthcareApi.Infrastructure;
+
+
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddScoped<IPersonRepository, PersonRepository>();
+builder.Services.AddScoped<IPersonService, PersonService>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IPatientRepository, PatientRepository>();
 
 
-builder.Services.AddDbContext<MedicalDbContext>(options =>
+
+
+
+
+builder.Services.AddDbContext<HealthcareApiContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
@@ -19,12 +39,13 @@ builder.Services.AddSwaggerGen(options =>
     options.IncludeXmlComments(xmlFile); // This tells Swagger to include the XML fileas comments
 });
 
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
     var serviceProvider = scope.ServiceProvider;
-    var dbContext = serviceProvider.GetRequiredService<MedicalDbContext>();
+    var dbContext = serviceProvider.GetRequiredService<HealthcareApiContext>();
     if (!await dbContext.Database.CanConnectAsync())
     {
         await dbContext.Database.MigrateAsync();

@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using HealthcareApi.Api.Models;
+using HealthcareApi.Application.DTO;
+
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using TaskProject.Models;
-using TaskProject.Models.Dto;
 
-namespace TaskProject.Controllers
+namespace HealthcareApi.Api.Controllers
 {
 
 
@@ -14,9 +15,9 @@ namespace TaskProject.Controllers
     {
         // Mock data for doctors
         private static readonly List<Doctor> Doctors = new List<Doctor>
-    {
+        {
         
-    };
+        };
         /// <summary>
         /// Gets all Doctors.
         /// </summary>

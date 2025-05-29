@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Application;
+using HealthcareApi.Api.Models;
+using HealthcareApi.Application.DTO;
+
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 using System.Collections.Generic;
-using TaskProject.Models;
-using TaskProject.Models.Dto;
-namespace TaskProject.Controllers
+
+namespace HealthcareApi.Api.Controllers
 {
    
 
@@ -17,11 +20,17 @@ namespace TaskProject.Controllers
     {
         
     };
+
+        [HttpPost]
+        public ActionResult<PatientDto> CreatePatient([FromBody] PatientDto dto)
+        {
+            return Ok();
+        }
         /// <summary>
         /// Gets all Registered Patients.
         /// </summary>
         /// <returns> A list of all Patients.</returns>
-        
+
         // GET: api/Patients
         [HttpGet]
         public ActionResult<IEnumerable<Patient>> GetPatients()
@@ -34,12 +43,7 @@ namespace TaskProject.Controllers
         /// <returns> Added Patient.</returns>
         /// 
         // POST: api/Patients
-        [HttpPost]
-        public ActionResult<Patient> CreatePatient([FromBody] CreatePatientDto dto)
-        {
-            return Ok();
-
-        }
+        
 
     }
 
