@@ -7,11 +7,18 @@ USE HealthcareApi;
 GO
 
 
-CREATE SCHEMA healthcare;
+CREATE SCHEMA Core;
+GO
+
+CREATE SCHEMA Clinical;
+GO
+
+CREATE SCHEMA Billing;
 GO
 
 
-CREATE TABLE healthcare.Persons (
+
+CREATE TABLE Core.Persons (
     Id INT IDENTITY(1,1) PRIMARY KEY,
     Name VARCHAR(100) NOT NULL,
     Surname VARCHAR(100) NOT NULL,
@@ -23,30 +30,30 @@ CREATE TABLE healthcare.Persons (
 );
 
 
-CREATE TABLE healthcare.DeskStaff (
+CREATE TABLE Core.DeskStaff (
     PersonId INT PRIMARY KEY,
-    FOREIGN KEY (PersonId) REFERENCES healthcare.Persons(Id)
+    FOREIGN KEY (PersonId) REFERENCES Core.Persons(Id)
 );
 
-CREATE TABLE healthcare.Patients (
+CREATE TABLE Core.Patients (
     PersonId INT PRIMARY KEY,
     InsuranceNumber VARCHAR(50),
     EmergencyContactName VARCHAR(100),
     EmergencyContactPhone VARCHAR(20),
     BloodType VARCHAR(3),
     Allergies TEXT,
-    CONSTRAINT FK_Patients_Person FOREIGN KEY (PersonId) REFERENCES healthcare.Persons(Id)
+    CONSTRAINT FK_Patients_Person FOREIGN KEY (PersonId) REFERENCES Core.Persons(Id)
 );
 
-CREATE TABLE healthcare.Doctors (
+CREATE TABLE Core.Doctors (
     PersonId INT PRIMARY KEY,
     Specialty VARCHAR(100),
     LicenseNumber VARCHAR(50),
     YearsOfExperience INT,
-    CONSTRAINT FK_Doctors_Person FOREIGN KEY (PersonId) REFERENCES healthcare.Persons(Id)
+    CONSTRAINT FK_Doctors_Person FOREIGN KEY (PersonId) REFERENCES Core.Persons(Id)
 );
 
-CREATE TABLE healthcare.Appointments (
+CREATE TABLE Clinical.Appointments (
     AppointmentId INT IDENTITY(1,1) PRIMARY KEY,
     PatientId INT NOT NULL,
     DoctorId INT NOT NULL,
@@ -54,22 +61,22 @@ CREATE TABLE healthcare.Appointments (
     ReasonForVisit VARCHAR(255),
     Status VARCHAR(50),
     Notes TEXT,
-    CONSTRAINT FK_Appointments_Patient FOREIGN KEY (PatientId) REFERENCES healthcare.Patients(PersonId),
-    CONSTRAINT FK_Appointments_Doctor FOREIGN KEY (DoctorId) REFERENCES healthcare.Doctors(PersonId)
+    CONSTRAINT FK_Appointments_Patient FOREIGN KEY (PatientId) REFERENCES Core.Patients(PersonId),
+    CONSTRAINT FK_Appointments_Doctor FOREIGN KEY (DoctorId) REFERENCES Core.Doctors(PersonId)
 );
 
-CREATE TABLE healthcare.Diagnoses (
+CREATE TABLE Clinical.Diagnoses (
     DiagnosisId INT IDENTITY(1,1) PRIMARY KEY,
     PatientId INT NOT NULL,
     DiagnosisDate DATE NOT NULL,
     Description VARCHAR(255),
     PrescribedTreatment TEXT,
     DoctorId INT NOT NULL,
-    CONSTRAINT FK_Diagnoses_Patient FOREIGN KEY (PatientId) REFERENCES healthcare.Patients(PersonId),
-    CONSTRAINT FK_Diagnoses_Doctor FOREIGN KEY (DoctorId) REFERENCES healthcare.Doctors(PersonId)
+    CONSTRAINT FK_Diagnoses_Patient FOREIGN KEY (PatientId) REFERENCES Core.Patients(PersonId),
+    CONSTRAINT FK_Diagnoses_Doctor FOREIGN KEY (DoctorId) REFERENCES Core.Doctors(PersonId)
 );
 
-CREATE TABLE healthcare.Payments (
+CREATE TABLE Billing.Payments (
     PaymentId INT IDENTITY(1,1) PRIMARY KEY,
     AppointmentId INT NOT NULL,
     Amount DECIMAL(10, 2) NOT NULL,
@@ -77,17 +84,17 @@ CREATE TABLE healthcare.Payments (
     PaymentMethod VARCHAR(50),
     Status VARCHAR(50),
     Notes TEXT,
-    CONSTRAINT FK_Payments_Appointment FOREIGN KEY (AppointmentId) REFERENCES healthcare.Appointments(AppointmentId)
+    CONSTRAINT FK_Payments_Appointment FOREIGN KEY (AppointmentId) REFERENCES Clinical.Appointments(AppointmentId)
 );
 
-CREATE INDEX IX_Persons_Surname ON healthcare.Persons(Surname);
-CREATE INDEX IX_Patients_PersonId ON healthcare.Patients(PersonId);
-CREATE INDEX IX_Doctors_Specialty ON healthcare.Doctors(Specialty);
-CREATE INDEX IX_Appointments_PatientId ON healthcare.Appointments(PatientId);
-CREATE INDEX IX_Appointments_DoctorId ON healthcare.Appointments(DoctorId);
-CREATE INDEX IX_Appointments_Date ON healthcare.Appointments(AppointmentDateTime);
-CREATE INDEX IX_Diagnoses_PatientId ON healthcare.Diagnoses(PatientId);
-CREATE INDEX IX_Diagnoses_DoctorId ON healthcare.Diagnoses(DoctorId);
-CREATE INDEX IX_Diagnoses_Date ON healthcare.Diagnoses(DiagnosisDate);
-CREATE INDEX IX_Payments_AppointmentId ON healthcare.Payments(AppointmentId);
-CREATE INDEX IX_Payments_PaymentDate ON healthcare.Payments(PaymentDate);
+CREATE INDEX IX_Persons_Surname ON Core.Persons(Surname);
+CREATE INDEX IX_Patients_PersonId ON Core.Patients(PersonId);
+CREATE INDEX IX_Doctors_Specialty ON Core.Doctors(Specialty);
+CREATE INDEX IX_Appointments_PatientId ON Clinical.Appointments(PatientId);
+CREATE INDEX IX_Appointments_DoctorId ON Clinical.Appointments(DoctorId);
+CREATE INDEX IX_Appointments_Date ON Clinical.Appointments(AppointmentDateTime);
+CREATE INDEX IX_Diagnoses_PatientId ON Clinical.Diagnoses(PatientId);
+CREATE INDEX IX_Diagnoses_DoctorId ON Clinical.Diagnoses(DoctorId);
+CREATE INDEX IX_Diagnoses_Date ON Clinical.Diagnoses(DiagnosisDate);
+CREATE INDEX IX_Payments_AppointmentId ON Billing.Payments(AppointmentId);
+CREATE INDEX IX_Payments_PaymentDate ON Billing.Payments(PaymentDate);

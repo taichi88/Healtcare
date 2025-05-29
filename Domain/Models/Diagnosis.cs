@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace HealthcareApi.Api.Models;
+namespace HealthcareApi.Domain.Models;
 
 public partial class Diagnosis
 {
