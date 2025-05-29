@@ -2,10 +2,8 @@
 CREATE DATABASE HealthcareApi;
 GO
 
-
 USE HealthcareApi;
 GO
-
 
 CREATE SCHEMA Core;
 GO

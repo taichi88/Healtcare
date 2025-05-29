@@ -3,13 +3,10 @@ using Application.Services;
 using HealthcareApi.Domain.IRepositories;
 using Microsoft.EntityFrameworkCore;
 using HealthcareApi.Infrastructure.Repositories;
-using HealthcareApi.Api.Models;
 using HealthcareApi.Application.IUnitOfWork;
 using HealthcareApi.Infrastructure.UnitOfWork;
 using HealthcareApi.Infrastructure;
-
-
-
+using HealthcareApi.Application.Interfaces;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,14 +16,9 @@ builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 builder.Services.AddScoped<IPersonService, PersonService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IPatientRepository, PatientRepository>();
-
-
-
-
-
-
-builder.Services.AddDbContext<HealthcareApiContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddScoped<IPatientService, PatientService>();
+builder.Services.AddScoped<IDoctorService, DoctorService>();
+builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
 
 
 builder.Services.AddControllers();

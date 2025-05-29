@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using HealthcareApi.Api.Models;
+using HealthcareApi.Domain.Models;
 using HealthcareApi.Domain.IRepositories;
+using HealthcareApi.Infrastructure;
 
 
 
@@ -25,6 +26,7 @@ namespace HealthcareApi.Infrastructure.Repositories
             await _context.SaveChangesAsync();
             return person;
         }
+
 
         public async Task<Person> GetByIdAsync(int id) =>
             await _context.Persons.FindAsync(id);

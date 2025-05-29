@@ -1,12 +1,9 @@
 ﻿
 using Microsoft.AspNetCore.Mvc;
-
-
-
-using Application.Services;
-
 using HealthcareApi.application.Interfaces;
 using HealthcareApi.Application.DTO;
+
+
 
 namespace HealthcareApi.Api.Controllers
 {
@@ -51,7 +48,6 @@ namespace HealthcareApi.Api.Controllers
                 return NotFound();
             return NoContent(); // 204 on success
         }
-
 
     }
 }

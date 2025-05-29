@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using HealthcareApi.Api.Models;
+﻿
+using HealthcareApi.Domain.Models;
 using HealthcareApi.application.Interfaces;
 using HealthcareApi.Application.DTO;
 using HealthcareApi.Application.IUnitOfWork;
-using HealthcareApi.Domain.IRepositories;
-
-
 
 
 namespace Application.Services
@@ -23,24 +16,19 @@ namespace Application.Services
             _unitOfWork = unitOfWork;
         }
 
+
         public async Task<PersonDto> CreatePersonAsync(PersonDto dto)
         {
-
             var person = new Person
             {
                 Name = dto.Name,
                 Surname = dto.Surname,
                 Email = dto.Email,
                 Address = dto.Address,
-                PersonalNumber = dto.PersonalNumber,
-                
+                PersonalNumber = dto.PersonalNumber,               
                 Phone = dto.Phone,
                 
-
-                // Map other fields...
             };
-            
-
             var createdPerson = await _unitOfWork.Persons.AddPersonAsync(person);
 
             return new PersonDto
@@ -48,15 +36,11 @@ namespace Application.Services
                 Name = createdPerson.Name,
                 Surname = createdPerson.Surname,
                 PersonalNumber = createdPerson.PersonalNumber,
-                
                 Phone = createdPerson.Phone,
-                
                 Email = createdPerson.Email,
                 Address = createdPerson.Address,
-                // Map other fields...
+                
             };
-
-
         }
         public async Task<PersonDto> UpdatePersonAsync(int id, PersonDto dto)
         {
@@ -67,17 +51,13 @@ namespace Application.Services
             person.Name = dto.Name;
             person.Email = dto.Email;
             person.Address = dto.Address;
-            
             // …etc…
-
             await _unitOfWork.Persons.UpdateAsync(person);
-
             // map back to DTO
             return new PersonDto
             {
                 Name = person.Name,
-                Email = person.Email,
-                
+                Email = person.Email,              
                 // …etc…
             };
         }
@@ -93,9 +73,6 @@ namespace Application.Services
                 Email = person.Email,
                 Address = person.Address,
                 PersonalNumber = person.PersonalNumber,
-                
-                
-
                 Phone = person.Phone,
                 
             };

@@ -3,17 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HealthcareApi.Domain.Models;
 using HealthcareApi.Application.DTO;
 
 
 
 namespace HealthcareApi.application.Interfaces
 {
-    internal interface IPatientService
+    public interface IPatientService
     {
-        Task<PatientDto> CreatePersonAsync(PatientDto dto);
-        Task<PatientDto> UpdatePersonAsync(int id, PersonDto dto);
-        Task<PatientDto?> GetByIdAsync(int id);
-        Task<bool> DeletePersonAsync(int id);
+        Task<PatientDto> CreatePatientAsync(PatientDto dto);
+
+        Task<PatientDto> UpdatePatientAsync(int id, PatientDto dto);
+        Task<PatientDto?> GetPatientByIdAsync(int id);
+        Task<bool> DeletePatientAsync(int id);
+        Task<IEnumerable<PatientDto>> GetAllPatientAsync();
     }
 }
