@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using HealthcareApi.Domain.IRepositories.IDapperRepositories;
+using AutoMapper;
 
 
 
@@ -20,49 +22,50 @@ namespace HealthcareApi.Api.Controllers
         {
            
         };
+        private readonly IDapperAppointmentRepository _repository;
+        private readonly IMapper _mapper;
+        public AppointmentsController(IDapperAppointmentRepository repository, IMapper mapper)
+        {
+            _repository = repository;
+            _mapper = mapper;
+        }
 
         /// <summary>
         /// Gets all appointments.
         /// </summary>
         /// <returns>A list of all appointments.</returns>
+      
         [HttpGet]
-
-        public ActionResult<IEnumerable<Appointment>> GetAllAppointments()
+        public async Task<ActionResult<IEnumerable<Appointment>>> GetAllAppointmentsAsync()
         {
-            return Ok(Appointments);
-        }
 
-        /// <summary>
-        /// Creates a new appointment.
-        /// </summary>
-        /// <param name="appointmentDto">The data required to create the appointment.</param>
-        /// <returns>The created appointment object.</returns>
-        /// <response code="201">Appointment successfully created.</response>
-        /// <response code="400">Invalid appointment data.</response>
+            
+                var appointments = await _repository.GetAllAppointmentsAsync();
+                var dtoList = _mapper.Map<IEnumerable<AppointmentsDto>>(appointments);
+                return Ok(dtoList);
+            
+        }
         [HttpPost]
-        
-        public ActionResult<Appointment> CreateAppointment([FromBody] AppointmentsDto appointmentDto)
+        public async Task<ActionResult<int>> CreateAppointmentAsync([FromBody] AppointmentsDto dto)
         {
-            return Ok();
+            var mappedAppointment = _mapper.Map<Appointment>(dto);
+            var id = await _repository.CreateAppointmentAsync(mappedAppointment);
+            return Ok(id); // returns HTTP 200 with created appointment ID
         }
 
-        /// <summary>
-        /// Gets an appointment by ID.
-        /// </summary>
-        /// <param name="id">Appointment ID</param>
-        /// <returns>The appointment if found.</returns>
-        /// <response code="200">Returns the appointment</response>
-        /// <response code="404">Appointment not found</response>
+
+
+
+
         [HttpGet("{id}")]
-        public ActionResult<Appointment> GetAppointmentById([FromRoute] int id)
-        {
-            var appointment = Appointments.Find(a => a.AppointmentId == id);
-            if (appointment == null)
-            {
-                return NotFound();
-            }
-            return Ok(appointment);
-        }
+public async Task<ActionResult<Appointment>> GetAppointmentByIdAsync(int id)
+{
+    var appointment = await _repository.GetAppointmentByIdAsync(id);
+    if (appointment == null)
+        return NotFound();
+
+    return Ok(appointment);
+}
 
         /// <summary>
         /// Updates an existing appointment by ID.

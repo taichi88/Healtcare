@@ -2,7 +2,7 @@
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 
-namespace DataAccess.Dapper
+namespace HealthcareApi.Infrastructure.Data.Dapper.DapperDbContext
 {
     public class DapperDbContext
     {
@@ -15,9 +15,7 @@ namespace DataAccess.Dapper
             _connectionString = _configuration.GetConnectionString("DefaultConnection");
         }
 
-        public IDbConnection CreateConnection()
-        {
-            return new SqlConnection(_connectionString);
-        }
+        public IDbConnection CreateConnection() => new SqlConnection(_connectionString);
+        
     }
 }

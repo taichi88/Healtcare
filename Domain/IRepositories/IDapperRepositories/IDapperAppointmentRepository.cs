@@ -5,10 +5,16 @@ using System.Text;
 using System.Threading.Tasks;
 using HealthcareApi.Domain.Models;
 
+
 namespace HealthcareApi.Domain.IRepositories.IDapperRepositories
 {
     public interface IDapperAppointmentRepository
     {
         Task<int> CreateAppointmentAsync(Appointment appointment);
+        Task<Appointment?> GetAppointmentByIdAsync(int id);
+        Task<IEnumerable<Appointment>> GetAllAppointmentsAsync();
+        Task<bool> UpdateAppointmentAsync(Appointment appointment);
+        Task<bool> DeleteAppointmentAsync(int id);
+
     }
 }
