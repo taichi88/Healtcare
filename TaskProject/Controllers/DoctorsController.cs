@@ -25,9 +25,8 @@ namespace HealthcareApi.Api.Controllers
         {
             var createdoDoctor = await _doctorservice.CreateDoctorAsync(dto);
 
-            return Ok();
+            return Ok(createdoDoctor);
         }
-
         [HttpGet("{id}")]
         public async Task<ActionResult<DoctorDto>> GetDoctorById(int id)
         {

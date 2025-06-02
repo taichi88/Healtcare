@@ -23,7 +23,7 @@ namespace HealthcareApi.Api.Controllers
         public async Task<ActionResult<PersonDto>> CreatePerson([FromBody] PersonDto dto)
         {
             var createdPerson = await _personService.CreatePersonAsync(dto);
-            return Ok();
+            return Ok(createdPerson);
         }
 
         [HttpGet("{id}")]
