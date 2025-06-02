@@ -29,6 +29,10 @@ namespace HealthcareApi.Application
             CreateMap<Doctor, DoctorDto>().ReverseMap();
 
 
+
+            CreateMap<Appointment, AppointmentsDto>().ReverseMap(); // Add this line to map Appointment to AppointmentDto>
+
+
         }
     }
 }
