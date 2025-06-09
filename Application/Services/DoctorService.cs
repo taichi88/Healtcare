@@ -15,8 +15,8 @@ namespace Application.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        private readonly ILogger<PatientService> _logger;
-        public DoctorService(IUnitOfWork unitOfWork, IMapper mapper, ILogger<PatientService> logger)
+        private readonly ILogger<DoctorService> _logger;
+        public DoctorService(IUnitOfWork unitOfWork, IMapper mapper, ILogger<DoctorService> logger)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -25,18 +25,17 @@ namespace Application.Services
         }
         public async Task<DoctorDto> CreateDoctorAsync(DoctorDto dto)
         {
-            _logger.LogInformation("Creating new doctor with PersonId: {PersonId}", dto.PersonId);
+            _logger.LogInformation("Creating new doctor with DoctorId: {DoctorId}", dto.PersonId);
 
 
             var doctor = _mapper.Map<Doctor>(dto);
             var createdDoctor = await _unitOfWork.Doctors.AddDoctorAsync(doctor);
 
-            _logger.LogInformation("Doctor created successfully with PersonId: {PersonId}", createdDoctor.PersonId);
+            _logger.LogInformation("Doctor created successfully with DoctorId: {DoctorId}", createdDoctor.PersonId);
 
             return _mapper.Map<DoctorDto>(createdDoctor);
 
         }
-
 
         public async Task<IEnumerable<DoctorDto>> GetAllDoctorsAsync()
         {
@@ -50,7 +49,7 @@ namespace Application.Services
         }
 
 
-        public async Task<DoctorDto> GetDoctorByIdAsync(int id)
+        public async Task<DoctorDto?> GetDoctorByIdAsync(int id)
         {
             _logger.LogInformation("Retrieving doctor by Id: {DoctorId}", id);
 
@@ -63,7 +62,7 @@ namespace Application.Services
             return _mapper.Map<DoctorDto>(doctor);
         }
 
-        public async Task<DoctorDto> UpdateDoctorAsync(int id, DoctorDto dto)
+        public async Task<DoctorDto?> UpdateDoctorAsync(int id, DoctorDto dto)
         {
             _logger.LogInformation("Updating doctor with Id: {DoctorId}", id);
 
@@ -77,6 +76,7 @@ namespace Application.Services
             _mapper.Map(dto, doctor); 
 
             await _unitOfWork.Doctors.UpdateDoctorAsync(doctor);
+
             await _unitOfWork.CommitAsync();
 
             _logger.LogInformation("Doctor with Id: {DoctorId} updated successfully", id);

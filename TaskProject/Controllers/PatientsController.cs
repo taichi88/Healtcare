@@ -20,14 +20,35 @@ namespace HealthcareApi.Api.Controllers
             _patientService = patientService;
         }
 
+        /// <summary>
+        /// Create a new patient
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult<PatientDto>> CreatePatient([FromBody] PatientDto dto)
         {
             var createdPatient = await _patientService.CreatePatientAsync(dto);
 
-            return Ok();    
+            return Ok(createdPatient);
         }
 
+        /// <summary>
+        /// Get all patients
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<PatientDto>>> GetAllPatients()
+        {
+            var patients = await _patientService.GetAllPatientAsync();
+            return Ok(patients);
+        }
+
+        /// <summary>
+        /// Get a patient by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<PatientDto>> GetPatientById(int id)
         {
@@ -36,12 +57,24 @@ namespace HealthcareApi.Api.Controllers
                 return NotFound();
             return Ok(patient);
         }
+        /// <summary>
+        /// Update a patient
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="dto"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public async Task<ActionResult<PatientDto>> UpdatePatient(int id, PatientDto dto)
         {
             var updated = await _patientService.UpdatePatientAsync(id, dto);
             return Ok(updated);
         }
+
+        /// <summary>
+        /// Delete a patient    
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePatient(int id)
         {
@@ -49,13 +82,7 @@ namespace HealthcareApi.Api.Controllers
             if (!deleted)
                 return NotFound();
             return NoContent(); // 204 on success
-        }
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<PatientDto>>> GetAllPatients()
-        {
-            var patients = await _patientService.GetAllPatientAsync();
-            return Ok(patients);
-        }
+        }     
 
     }
 

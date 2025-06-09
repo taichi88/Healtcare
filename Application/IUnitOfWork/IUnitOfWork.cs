@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using HealthcareApi.Application.Interfaces;
 using HealthcareApi.Domain.IRepositories;
+using HealthcareApi.Domain.IRepositories.IDapperRepositories;
+using Microsoft.EntityFrameworkCore.Storage;
+
 
 namespace HealthcareApi.Application.IUnitOfWork
 {
@@ -13,8 +17,14 @@ namespace HealthcareApi.Application.IUnitOfWork
         IPersonRepository Persons { get; }
         IPatientRepository Patients { get; }
         IDoctorRepository Doctors { get; }
+
+        IDapperAppointmentRepository Appointments { get; }
+
+
+        IDbTransaction? DapperTransaction { get; }
+
         Task<int> CommitAsync();
-        void Rollback();  // optional if you want explicit rollback
-        void BeginTransaction(); // added BeginTransaction method
+        public Task RollbackAsync();
+        Task<IDbContextTransaction> BeginTransactionAsync(); // added BeginTransaction method
     }
 }

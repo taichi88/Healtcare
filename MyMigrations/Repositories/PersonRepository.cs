@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using HealthcareApi.Domain.Models;
 using HealthcareApi.Domain.IRepositories;
 using HealthcareApi.Infrastructure;
+using System.Numerics;
+using Microsoft.EntityFrameworkCore;
 
 
 
@@ -21,21 +23,30 @@ namespace HealthcareApi.Infrastructure.Repositories
         }
         public async Task<Person> AddPersonAsync(Person person)
         {
-
             _context.Persons.Add(person);
-            await _context.SaveChangesAsync();
+           
             return person;
         }
+        public async Task<IEnumerable<Person>> GetAllPersonsAsync()
 
+        {
+            return await _context.Persons.ToListAsync();
+        }
 
-        public async Task<Person> GetByIdAsync(int id) =>
-            await _context.Persons.FindAsync(id);
+        public async Task<Person?> GetByIdAsync(int id)
+        {
+            return await _context.Persons.FindAsync(id);
 
-        public async Task UpdateAsync(Person person)
+        }
+
+        public async Task<bool>  UpdateAsync(Person person)
         {
             _context.Persons.Update(person);
-            await _context.SaveChangesAsync();   // EF Core opens+commits a transaction here
+            var result = await _context.SaveChangesAsync();
+            return result > 0;
+               // EF Core opens+commits a transaction here
         }
+
         public async Task<bool> DeleteAsync(int id)
         {
             var person = await _context.Persons.FindAsync(id);

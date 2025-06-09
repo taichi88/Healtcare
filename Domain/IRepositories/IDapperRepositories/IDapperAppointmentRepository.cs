@@ -10,10 +10,10 @@ namespace HealthcareApi.Domain.IRepositories.IDapperRepositories
 {
     public interface IDapperAppointmentRepository
     {
-        Task<int> CreateAppointmentAsync(Appointment appointment);
+        Task<Appointment?> CreateAppointmentAsync(Appointment appointment);
         Task<Appointment?> GetAppointmentByIdAsync(int id);
         Task<IEnumerable<Appointment>> GetAllAppointmentsAsync();
-        Task<bool> UpdateAppointmentAsync(Appointment appointment);
+        Task<bool> UpdateAppointmentAsync(int id, Appointment appointment);
         Task<bool> DeleteAppointmentAsync(int id);
 
     }

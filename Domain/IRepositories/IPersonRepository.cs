@@ -13,9 +13,10 @@ namespace HealthcareApi.Domain.IRepositories
     {
         Task<Person> AddPersonAsync(Person person);
 
+        Task<IEnumerable<Person>> GetAllPersonsAsync();
 
-        Task<Person> GetByIdAsync(int id);
-        Task UpdateAsync(Person person);
+        Task<Person?> GetByIdAsync(int id);
+        Task<bool> UpdateAsync(Person person);
         Task<bool> DeleteAsync(int id);
 
     }

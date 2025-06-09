@@ -3,6 +3,7 @@ using HealthcareApi.Domain.Models;
 using HealthcareApi.Domain.IRepositories;
 using HealthcareApi.Infrastructure ;
 using Microsoft.EntityFrameworkCore;
+using System.Numerics;
 
 namespace HealthcareApi.Infrastructure.Repositories
 {
@@ -22,20 +23,21 @@ namespace HealthcareApi.Infrastructure.Repositories
             return patient;
         }
 
-        public async Task<Patient> GetPatientByIdAsync(int id)
-        {
-            return await _context.Patients.FindAsync(id);
-        }
-
         public async Task<IEnumerable<Patient>> GetAllPatientAsync()
         {
             return await _context.Patients.ToListAsync();
         }
 
-        public async Task UpdatePatientAsync(Patient patient)
+        public async Task<Patient?> GetPatientByIdAsync(int id)
+        {
+            return await _context.Patients.FindAsync(id);
+        }
+
+        public async Task<bool> UpdatePatientAsync(Patient patient)
         {
             _context.Patients.Update(patient);
-            await _context.SaveChangesAsync();
+            var result = await _context.SaveChangesAsync();
+            return result > 0;
         }
 
         public async Task<bool> DeleteAsync(int id)
@@ -45,8 +47,7 @@ namespace HealthcareApi.Infrastructure.Repositories
             
                 _context.Patients.Remove(patient);
                 await _context.SaveChangesAsync();
-                return true;
-            
+                return true; 
         }
     }
 

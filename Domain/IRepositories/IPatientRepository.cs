@@ -12,14 +12,11 @@ namespace HealthcareApi.Domain.IRepositories
     public interface IPatientRepository
     {
         Task<Patient> AddPatientAsync(Patient patient);
-
-
-
-        Task<Patient> GetPatientByIdAsync(int id);
         Task<IEnumerable<Patient>> GetAllPatientAsync();
-        
-        Task UpdatePatientAsync(Patient patient);
+        Task<Patient?> GetPatientByIdAsync(int id);
+        Task<bool> UpdatePatientAsync(Patient patient);
         Task<bool> DeleteAsync(int id);
+        
     }
 
 }
