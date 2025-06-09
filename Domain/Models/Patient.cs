@@ -5,6 +5,8 @@ namespace HealthcareApi.Domain.Models;
 
 public partial class Patient
 {
+    public int Id { get; set; }
+
     public int PersonId { get; set; }
 
     public string? InsuranceNumber { get; set; }

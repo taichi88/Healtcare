@@ -10,10 +10,10 @@ namespace HealthcareApi.Application.Interfaces
     public interface IDoctorService
     {
         Task<DoctorDto> CreateDoctorAsync(DoctorDto dto);
-
-        Task<DoctorDto> UpdateDoctorAsync(int id, DoctorDto dto);
-        Task<DoctorDto?> GetDoctorByIdAsync(int id);
-        Task<bool> DeleteDoctorAsync(int id);
         Task<IEnumerable<DoctorDto>> GetAllDoctorsAsync();
+        Task<DoctorDto?> GetDoctorByIdAsync(int id);
+        Task<DoctorDto?> UpdateDoctorAsync(int id, DoctorDto dto);
+        Task<bool> DeleteDoctorAsync(int id);
+        
     }
 }

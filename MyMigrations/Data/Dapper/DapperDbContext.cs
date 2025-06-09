@@ -6,16 +6,14 @@ namespace HealthcareApi.Infrastructure.Data.Dapper.DapperDbContext
 {
     public class DapperDbContext
     {
-        private readonly IConfiguration _configuration;
         private readonly string _connectionString;
 
         public DapperDbContext(IConfiguration configuration)
         {
-            _configuration = configuration;
-            _connectionString = _configuration.GetConnectionString("DefaultConnection");
+            _connectionString = configuration.GetConnectionString("DefaultConnection")
+                ?? throw new InvalidOperationException("Connection string 'DefaultConnection' is not set.");
         }
 
         public IDbConnection CreateConnection() => new SqlConnection(_connectionString);
-        
     }
 }

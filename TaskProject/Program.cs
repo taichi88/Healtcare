@@ -8,7 +8,8 @@ using HealthcareApi.Infrastructure.UnitOfWork;
 using HealthcareApi.Infrastructure;
 using HealthcareApi.Application.Interfaces;
 
-using HealthcareApi.Domain.Models;
+
+
 
 using HealthcareApi.Infrastructure.Data.Dapper.DapperDbContext;
 using HealthcareApi.Domain.IRepositories.IDapperRepositories;
@@ -31,6 +32,7 @@ builder.Services.AddScoped<IPatientRepository, PatientRepository>();
 builder.Services.AddScoped<IPatientService, PatientService>();
 builder.Services.AddScoped<IDoctorService, DoctorService>();
 builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
+builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 builder.Services.AddScoped<DapperDbContext>();
 builder.Services.AddAutoMapper(typeof(HealthcareApi.Application.AutoMapperClass));
 builder.Services.AddLogging();

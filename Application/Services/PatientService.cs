@@ -13,9 +13,9 @@ namespace Application.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        private readonly ILogger<PersonService> _logger;
+        private readonly ILogger<PatientService> _logger;
 
-        public PatientService(IUnitOfWork unitOfWork, IMapper mapper, ILogger<PersonService> logger)
+        public PatientService(IUnitOfWork unitOfWork, IMapper mapper, ILogger<PatientService> logger)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -25,12 +25,12 @@ namespace Application.Services
 
         public async Task<PatientDto> CreatePatientAsync(PatientDto dto)
         {
-            _logger.LogInformation("Creating a new patient with PersonId: {PersonId}", dto.PersonId);
+            _logger.LogInformation("Creating a new patient with PatientId: {PatientId}", dto.PersonId);
 
             var patient = _mapper.Map<Patient>(dto);
             var createdPatient = await _unitOfWork.Patients.AddPatientAsync(patient);
 
-            _logger.LogInformation("Patient created successfully with PersonId: {PersonId}", createdPatient.PersonId);
+            _logger.LogInformation("Patient created successfully with PatientId: {PatientId}", createdPatient.PersonId);
 
 
             return _mapper.Map<PatientDto>(createdPatient);
@@ -49,8 +49,7 @@ namespace Application.Services
             return _mapper.Map<IEnumerable<PatientDto>>(patients);
         }
 
-
-        public async Task<PatientDto> GetPatientByIdAsync(int id)
+        public async Task<PatientDto?> GetPatientByIdAsync(int id)
         {
             _logger.LogInformation("Retrieving patient by Id: {PatientId}", id);
 
@@ -63,8 +62,7 @@ namespace Application.Services
             return _mapper.Map<PatientDto>(patient);
         }
 
-
-        public async Task<PatientDto> UpdatePatientAsync(int id, PatientDto dto)
+        public async Task<PatientDto?> UpdatePatientAsync(int id, PatientDto dto)
         {
             _logger.LogInformation("Updating patient with Id: {PatientId}", id);
 
@@ -98,8 +96,6 @@ namespace Application.Services
                 _logger.LogWarning("Failed to delete patient with Id: {PatientId}", id);
 
             return result;
-        }
-
-        
+        }        
     }
 }

@@ -10,49 +10,69 @@ using Dapper;
 using System.Data;
 using HealthcareApi.Infrastructure.Data.Dapper.DapperDbContext;
 using HealthcareApi.Application.DTO;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace HealthcareApi.Infrastructure.Repositories.DapperRepository
 {
     public class DapperAppointmentRepository : IDapperAppointmentRepository
     {
-        private readonly DapperDbContext _context;
-
+       
         private readonly IDbConnection _connection;
-        private IDbTransaction _transaction = null!;
+        private readonly IDbTransaction? _transaction;
 
-        public DapperAppointmentRepository(DapperDbContext context)
+        public DapperAppointmentRepository(HealthcareApiContext context)
         {
-            _context = context;
+            _connection = context.Database.GetDbConnection();
+            _transaction = context.Database.CurrentTransaction?.GetDbTransaction();
         }
 
-        public async Task<int> CreateAppointmentAsync(Appointment appointment)
+        public async Task<Appointment?> CreateAppointmentAsync(Appointment appointment)
         {
             const string sql = @"
-    INSERT INTO Clinical.Appointments (PatientId, DoctorId, AppointmentDateTime, ReasonForVisit)
-    VALUES (@PatientId, @DoctorId, @AppointmentDateTime, @ReasonForVisit);
-    SELECT CAST(SCOPE_IDENTITY() as int);";
+                INSERT INTO Clinical.Appointments (PatientId, DoctorId, AppointmentDateTime, ReasonForVisit)
+                VALUES (@PatientId, @DoctorId, @AppointmentDateTime, @ReasonForVisit);
+                SELECT CAST(SCOPE_IDENTITY() as int);";
 
-            using var connection = _context.CreateConnection();
-            var id = await connection.QuerySingleAsync<int>(sql, appointment);
-            return id;
+            if (_connection.State != ConnectionState.Open)
+                _connection.Open();
+
+            var id = await _connection.QuerySingleAsync<int>(sql, appointment, _transaction);
+            appointment.AppointmentId = id; 
+            return appointment;
         }
+
 
 
         public async Task<IEnumerable<Appointment>> GetAllAppointmentsAsync()
         {
-            const string sql = "SELECT * FROM Clinical.Appointments";
-            using var connection = _context.CreateConnection();
-            var appointments = await connection.QueryAsync<Appointment>(sql);
+            const string sql = @"
+        SELECT PatientId, DoctorId, AppointmentDateTime, ReasonForVisit 
+        FROM Clinical.Appointments";
+
+            if (_connection.State != ConnectionState.Open)
+                _connection.Open();
+
+            var appointments = await _connection.QueryAsync<Appointment>(sql, transaction: _transaction);
             return appointments;
         }
+
         public async Task<Appointment?> GetAppointmentByIdAsync(int id)
         {
-            const string sql = "SELECT * FROM Clinical.Appointments WHERE AppointmentId = @Id";
-            using var connection = _context.CreateConnection();
-            return await connection.QuerySingleOrDefaultAsync<Appointment>(sql, new { Id = id });
+            const string sql = @"
+            SELECT AppointmentId, PatientId, DoctorId, AppointmentDateTime, ReasonForVisit
+            FROM Clinical.Appointments
+            WHERE AppointmentId = @Id";
+
+            if (_connection.State != ConnectionState.Open)
+                _connection.Open();
+
+            return await _connection.QuerySingleOrDefaultAsync<Appointment>(sql, new { Id = id }, _transaction);
         }
 
-        public async Task<bool> UpdateAppointmentAsync(Appointment appointment)
+
+        public async Task<bool> UpdateAppointmentAsync(int id, Appointment appointment)
         {
             const string sql = @"
         UPDATE Clinical.Appointments 
@@ -60,20 +80,37 @@ namespace HealthcareApi.Infrastructure.Repositories.DapperRepository
             DoctorId = @DoctorId, 
             AppointmentDateTime = @AppointmentDateTime, 
             ReasonForVisit = @ReasonForVisit
-        WHERE Id = @Id";
+        WHERE AppointmentId = @Id";
 
-            using var connection = _context.CreateConnection();
-            var rowsAffected = await connection.ExecuteAsync(sql, appointment);
+            if (_connection.State != ConnectionState.Open)
+                _connection.Open();
+
+            var parameters = new
+            {
+                Id = id,
+                appointment.PatientId,
+                appointment.DoctorId,
+                appointment.AppointmentDateTime,
+                appointment.ReasonForVisit
+            };
+
+            var rowsAffected = await _connection.ExecuteAsync(sql, parameters, _transaction);
             return rowsAffected > 0;
         }
+
 
         public async Task<bool> DeleteAppointmentAsync(int id)
         {
-            const string sql = "DELETE FROM Clinical.Appointments WHERE Id = @Id";
-            using var connection = _context.CreateConnection();
-            var rowsAffected = await connection.ExecuteAsync(sql, new { Id = id });
+            const string sql = "DELETE FROM Clinical.Appointments WHERE AppointmentId = @Id";
+
+            if (_connection.State != ConnectionState.Open)
+                _connection.Open();
+
+            var rowsAffected = await _connection.ExecuteAsync(sql, new { Id = id }, _transaction);
             return rowsAffected > 0;
         }
+
+
 
     }
 
