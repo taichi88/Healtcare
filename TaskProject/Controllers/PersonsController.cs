@@ -1,12 +1,10 @@
 ﻿
 using Microsoft.AspNetCore.Mvc;
-
-
-
-using Application.Services;
-
 using HealthcareApi.application.Interfaces;
 using HealthcareApi.Application.DTO;
+using Application.Services; 
+
+
 
 namespace HealthcareApi.Api.Controllers
 {
@@ -21,14 +19,34 @@ namespace HealthcareApi.Api.Controllers
         {
             _personService = personService;
         }
-
+        /// <summary>
+        /// Create a new person
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult<PersonDto>> CreatePerson([FromBody] PersonDto dto)
         {
             var createdPerson = await _personService.CreatePersonAsync(dto);
-            return Ok();
+            return Ok(createdPerson);
+        }
+        /// <summary>
+        /// Get all persons
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<PersonDto>>> GetAllPersonAsync()
+        {
+            var persons = await _personService.GetAllPersonsAsync();
+
+            return Ok(persons);
         }
 
+        /// <summary>
+        /// Get person by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<PersonDto>> GetById(int id)
         {
@@ -37,12 +55,24 @@ namespace HealthcareApi.Api.Controllers
                 return NotFound();
             return Ok(person);
         }
+       
+        /// <summary>
+        /// Update a person by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="dto"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public async Task<ActionResult<PersonDto>> UpdatePerson(int id,   PersonDto dto)
         {
             var updated = await _personService.UpdatePersonAsync(id, dto);
             return Ok(updated);
         }
+        /// <summary>
+        /// Delete a person
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePerson(int id)
         {
@@ -51,7 +81,6 @@ namespace HealthcareApi.Api.Controllers
                 return NotFound();
             return NoContent(); // 204 on success
         }
-
 
     }
 }

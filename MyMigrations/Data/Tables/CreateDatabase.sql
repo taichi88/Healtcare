@@ -2,10 +2,8 @@
 CREATE DATABASE HealthcareApi;
 GO
 
-
 USE HealthcareApi;
 GO
-
 
 CREATE SCHEMA Core;
 GO
@@ -31,12 +29,14 @@ CREATE TABLE Core.Persons (
 
 
 CREATE TABLE Core.DeskStaff (
-    PersonId INT PRIMARY KEY,
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    PersonId INT UNIQUE NOT NULL,
     FOREIGN KEY (PersonId) REFERENCES Core.Persons(Id)
 );
 
 CREATE TABLE Core.Patients (
-    PersonId INT PRIMARY KEY,
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    PersonId INT UNIQUE NOT NULL,
     InsuranceNumber VARCHAR(50),
     EmergencyContactName VARCHAR(100),
     EmergencyContactPhone VARCHAR(20),
@@ -46,7 +46,8 @@ CREATE TABLE Core.Patients (
 );
 
 CREATE TABLE Core.Doctors (
-    PersonId INT PRIMARY KEY,
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    PersonId INT UNIQUE NOT NULL,
     Specialty VARCHAR(100),
     LicenseNumber VARCHAR(50),
     YearsOfExperience INT,

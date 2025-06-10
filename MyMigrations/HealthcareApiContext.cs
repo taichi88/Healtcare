@@ -4,16 +4,18 @@ using HealthcareApi.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace HealthcareApi.Infrastructure;
-//sda
+
 public partial class HealthcareApiContext : DbContext
 {
     public HealthcareApiContext()
     {
     }
+
     public HealthcareApiContext(DbContextOptions<HealthcareApiContext> options)
         : base(options)
     {
     }
+
     public virtual DbSet<Appointment> Appointments { get; set; }
 
     public virtual DbSet<DeskStaff> DeskStaffs { get; set; }
@@ -28,11 +30,12 @@ public partial class HealthcareApiContext : DbContext
 
     public virtual DbSet<Person> Persons { get; set; }
 
+   
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Appointment>(entity =>
         {
-            entity.HasKey(e => e.AppointmentId).HasName("PK__Appointm__8ECDFCC210FC17F5");
+            entity.HasKey(e => e.AppointmentId).HasName("PK__Appointm__8ECDFCC2EDD9B25C");
 
             entity.ToTable("Appointments", "Clinical");
 
@@ -52,11 +55,13 @@ public partial class HealthcareApiContext : DbContext
                 .IsUnicode(false);
 
             entity.HasOne(d => d.Doctor).WithMany(p => p.Appointments)
+                .HasPrincipalKey(p => p.PersonId)
                 .HasForeignKey(d => d.DoctorId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Appointments_Doctor");
 
             entity.HasOne(d => d.Patient).WithMany(p => p.Appointments)
+                .HasPrincipalKey(p => p.PersonId)
                 .HasForeignKey(d => d.PatientId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Appointments_Patient");
@@ -64,21 +69,21 @@ public partial class HealthcareApiContext : DbContext
 
         modelBuilder.Entity<DeskStaff>(entity =>
         {
-            entity.HasKey(e => e.PersonId).HasName("PK__DeskStaf__AA2FFBE5BA79A8F7");
+            entity.HasKey(e => e.Id).HasName("PK__DeskStaf__3214EC07F495B35A");
 
             entity.ToTable("DeskStaff", "Core");
 
-            entity.Property(e => e.PersonId).ValueGeneratedNever();
+            entity.HasIndex(e => e.PersonId, "UQ__DeskStaf__AA2FFBE4A6271690").IsUnique();
 
             entity.HasOne(d => d.Person).WithOne(p => p.DeskStaff)
                 .HasForeignKey<DeskStaff>(d => d.PersonId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__DeskStaff__Perso__276EDEB3");
+                .HasConstraintName("FK__DeskStaff__Perso__286302EC");
         });
 
         modelBuilder.Entity<Diagnosis>(entity =>
         {
-            entity.HasKey(e => e.DiagnosisId).HasName("PK__Diagnose__0C54CC733CCFE268");
+            entity.HasKey(e => e.DiagnosisId).HasName("PK__Diagnose__0C54CC7336BBA273");
 
             entity.ToTable("Diagnoses", "Clinical");
 
@@ -94,11 +99,13 @@ public partial class HealthcareApiContext : DbContext
             entity.Property(e => e.PrescribedTreatment).HasColumnType("text");
 
             entity.HasOne(d => d.Doctor).WithMany(p => p.Diagnoses)
+                .HasPrincipalKey(p => p.PersonId)
                 .HasForeignKey(d => d.DoctorId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Diagnoses_Doctor");
 
             entity.HasOne(d => d.Patient).WithMany(p => p.Diagnoses)
+                .HasPrincipalKey(p => p.PersonId)
                 .HasForeignKey(d => d.PatientId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Diagnoses_Patient");
@@ -106,13 +113,14 @@ public partial class HealthcareApiContext : DbContext
 
         modelBuilder.Entity<Doctor>(entity =>
         {
-            entity.HasKey(e => e.PersonId).HasName("PK__Doctors__AA2FFBE580CF42CE");
+            entity.HasKey(e => e.Id).HasName("PK__Doctors__3214EC071979FC24");
 
             entity.ToTable("Doctors", "Core");
 
             entity.HasIndex(e => e.Specialty, "IX_Doctors_Specialty");
 
-            entity.Property(e => e.PersonId).ValueGeneratedNever();
+            entity.HasIndex(e => e.PersonId, "UQ__Doctors__AA2FFBE4F1DE2CAC").IsUnique();
+
             entity.Property(e => e.LicenseNumber)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -128,13 +136,14 @@ public partial class HealthcareApiContext : DbContext
 
         modelBuilder.Entity<Patient>(entity =>
         {
-            entity.HasKey(e => e.PersonId).HasName("PK__Patients__AA2FFBE5B7E5C374");
+            entity.HasKey(e => e.Id).HasName("PK__Patients__3214EC077A0D5241");
 
             entity.ToTable("Patients", "Core");
 
             entity.HasIndex(e => e.PersonId, "IX_Patients_PersonId");
 
-            entity.Property(e => e.PersonId).ValueGeneratedNever();
+            entity.HasIndex(e => e.PersonId, "UQ__Patients__AA2FFBE4BCE6301B").IsUnique();
+
             entity.Property(e => e.Allergies).HasColumnType("text");
             entity.Property(e => e.BloodType)
                 .HasMaxLength(3)
@@ -157,7 +166,7 @@ public partial class HealthcareApiContext : DbContext
 
         modelBuilder.Entity<Payment>(entity =>
         {
-            entity.HasKey(e => e.PaymentId).HasName("PK__Payments__9B556A387F7B3F5E");
+            entity.HasKey(e => e.PaymentId).HasName("PK__Payments__9B556A3877BF4C30");
 
             entity.ToTable("Payments", "Billing");
 
@@ -183,13 +192,13 @@ public partial class HealthcareApiContext : DbContext
 
         modelBuilder.Entity<Person>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Persons__3214EC074CA7FA65");
+            entity.HasKey(e => e.Id).HasName("PK__Persons__3214EC07EA1A0F95");
 
             entity.ToTable("Persons", "Core");
 
             entity.HasIndex(e => e.Surname, "IX_Persons_Surname");
 
-            entity.HasIndex(e => e.PersonalNumber, "UQ__Persons__AC2CC42EC6F9BC79").IsUnique();
+            entity.HasIndex(e => e.PersonalNumber, "UQ__Persons__AC2CC42ED6656B1A").IsUnique();
 
             entity.Property(e => e.Address)
                 .HasMaxLength(255)

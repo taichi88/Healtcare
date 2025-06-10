@@ -3,30 +3,43 @@ using Application.Services;
 using HealthcareApi.Domain.IRepositories;
 using Microsoft.EntityFrameworkCore;
 using HealthcareApi.Infrastructure.Repositories;
-using HealthcareApi.Api.Models;
 using HealthcareApi.Application.IUnitOfWork;
 using HealthcareApi.Infrastructure.UnitOfWork;
 using HealthcareApi.Infrastructure;
+using HealthcareApi.Application.Interfaces;
 
 
 
 
+using HealthcareApi.Infrastructure.Data.Dapper.DapperDbContext;
+using HealthcareApi.Domain.IRepositories.IDapperRepositories;
+using HealthcareApi.Infrastructure.Repositories.DapperRepository;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<HealthcareApiContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
+
+
 
 // Add services to the container.
 builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 builder.Services.AddScoped<IPersonService, PersonService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IPatientRepository, PatientRepository>();
+builder.Services.AddScoped<IPatientService, PatientService>();
+builder.Services.AddScoped<IDoctorService, DoctorService>();
+builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
+builder.Services.AddScoped<IAppointmentService, AppointmentService>();
+builder.Services.AddScoped<DapperDbContext>();
+builder.Services.AddAutoMapper(typeof(HealthcareApi.Application.AutoMapperClass));
+builder.Services.AddLogging();
+builder.Services.AddScoped<IDapperAppointmentRepository, DapperAppointmentRepository>();
 
 
 
-
-
-
-builder.Services.AddDbContext<HealthcareApiContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
 builder.Services.AddControllers();
@@ -41,6 +54,7 @@ builder.Services.AddSwaggerGen(options =>
 
 
 var app = builder.Build();
+
 
 using (var scope = app.Services.CreateScope())
 {

@@ -1,49 +1,88 @@
-﻿using Application;
-using HealthcareApi.Api.Models;
+﻿
+using Application.Services;
+using HealthcareApi.Domain.Models;
+using HealthcareApi.application.Interfaces;
 using HealthcareApi.Application.DTO;
-
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-using System.Collections.Generic;
 
 namespace HealthcareApi.Api.Controllers
 {
-   
-
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
+
     public class PatientsController : ControllerBase
     {
-        // Mock data for patients
-        private static readonly List<Patient> Patients = new List<Patient>
-    {
-        
-    };
+        private readonly IPatientService _patientService;
 
+        public PatientsController(IPatientService patientService)
+        {
+            _patientService = patientService;
+        }
+
+        /// <summary>
+        /// Create a new patient
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
         [HttpPost]
-        public ActionResult<PatientDto> CreatePatient([FromBody] PatientDto dto)
+        public async Task<ActionResult<PatientDto>> CreatePatient([FromBody] PatientDto dto)
         {
-            return Ok();
-        }
-        /// <summary>
-        /// Gets all Registered Patients.
-        /// </summary>
-        /// <returns> A list of all Patients.</returns>
+            var createdPatient = await _patientService.CreatePatientAsync(dto);
 
-        // GET: api/Patients
+            return Ok(createdPatient);
+        }
+
+        /// <summary>
+        /// Get all patients
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
-        public ActionResult<IEnumerable<Patient>> GetPatients()
+        public async Task<ActionResult<IEnumerable<PatientDto>>> GetAllPatients()
         {
-            return Ok(Patients);  // Return mocked patient data
+            var patients = await _patientService.GetAllPatientAsync();
+            return Ok(patients);
+        }
+
+        /// <summary>
+        /// Get a patient by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("{id}")]
+        public async Task<ActionResult<PatientDto>> GetPatientById(int id)
+        {
+            var patient = await _patientService.GetPatientByIdAsync(id);
+            if (patient == null)
+                return NotFound();
+            return Ok(patient);
         }
         /// <summary>
-        /// Register New Patient in our hospital.
+        /// Update a patient
         /// </summary>
-        /// <returns> Added Patient.</returns>
-        /// 
-        // POST: api/Patients
-        
+        /// <param name="id"></param>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        [HttpPut("{id}")]
+        public async Task<ActionResult<PatientDto>> UpdatePatient(int id, PatientDto dto)
+        {
+            var updated = await _patientService.UpdatePatientAsync(id, dto);
+            return Ok(updated);
+        }
+
+        /// <summary>
+        /// Delete a patient    
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeletePatient(int id)
+        {
+            var deleted = await _patientService.DeletePatientAsync(id);
+            if (!deleted)
+                return NotFound();
+            return NoContent(); // 204 on success
+        }     
 
     }
 
