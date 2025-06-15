@@ -2,12 +2,20 @@
 using Microsoft.AspNetCore.Mvc;
 using HealthcareApi.application.Interfaces;
 using HealthcareApi.Application.DTO;
-using Application.Services; 
-
+using Application.Services;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace HealthcareApi.Api.Controllers
 {
+    [Authorize(Roles = "Admin")]
+
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)] // If not logged in
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+
     [ApiController]
     [Route("api/[controller]")]
 
@@ -25,7 +33,7 @@ namespace HealthcareApi.Api.Controllers
         /// <param name="dto"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult<PersonDto>> CreatePerson([FromBody] PersonDto dto)
+        public async Task<ActionResult<PersonDto>> CreatePerson([FromForm] PersonDto dto)
         {
             var createdPerson = await _personService.CreatePersonAsync(dto);
             return Ok(createdPerson);
@@ -63,7 +71,7 @@ namespace HealthcareApi.Api.Controllers
         /// <param name="dto"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        public async Task<ActionResult<PersonDto>> UpdatePerson(int id,   PersonDto dto)
+        public async Task<ActionResult<PersonDto>> UpdatePerson(int id, [FromForm] PersonDto dto)
         {
             var updated = await _personService.UpdatePersonAsync(id, dto);
             return Ok(updated);

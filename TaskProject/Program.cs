@@ -12,6 +12,10 @@ using HealthcareApi.Infrastructure.Repositories.DapperRepository;
 using Microsoft.Identity.Client;
 using System.Data;
 using Microsoft.Data.SqlClient;
+using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 
 
@@ -44,21 +48,62 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<DapperDbContext>();
 builder.Services.AddAutoMapper(typeof(HealthcareApi.Application.AutoMapperClass));
 builder.Services.AddLogging();
-builder.Services.AddScoped<IDbConnection>(_ => new SqlConnection(builder.Configuration.GetConnectionString("DefaultConnection"))); 
+builder.Services.AddScoped<IDbConnection>(_ => new SqlConnection(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 
 
+var key = builder.Configuration["JwtSettings:Key"];
 
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(key!))
+        };
+    });
 
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+
+
 builder.Services.AddSwaggerGen(options =>
 {
-    // Get the XML documentation file path
     var xmlFile = Path.Combine(AppContext.BaseDirectory, "TaskProject.xml");
-    options.IncludeXmlComments(xmlFile); // This tells Swagger to include the XML fileas comments
+    options.IncludeXmlComments(xmlFile);
+
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Enter 'Bearer' [space] and then your valid token"
+    });
+
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] { }
+        }
+    });
 });
 
 
