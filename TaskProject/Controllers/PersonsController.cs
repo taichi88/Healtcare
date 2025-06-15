@@ -13,7 +13,7 @@ namespace HealthcareApi.Api.Controllers
     [Authorize(Roles = "Admin")]
 
     [ProducesResponseType(StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)] // If not logged in
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)] // If not logged ins
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
 
     [ApiController]
